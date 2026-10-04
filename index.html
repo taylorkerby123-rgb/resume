@@ -116,8 +116,11 @@ textarea::placeholder{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.status .dot{animation:none}}
 
 .out{display:flex;flex-direction:column;gap:14px;min-width:0}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px}
-.toolbar .meta{display:flex;flex-direction:column;min-width:0;margin-right:auto}
+.toolbar{display:flex;flex-direction:column;gap:10px;padding:12px 14px}
+.toolbar .meta{display:flex;flex-direction:column;min-width:0}
+.dl-row{display:flex;justify-content:center;gap:10px}
+.dl-row .btn{flex:0 1 190px;justify-content:center;min-width:0}
+.toolbar .price{text-align:center}
 .toolbar .meta strong{font-family:var(--f-display);font-size:15px}
 .meter{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
 .meter i{display:block;width:90px;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
@@ -286,9 +289,11 @@ textarea::placeholder{color:var(--muted)}
   <section class="out" aria-label="Resume preview">
     <div class="panel toolbar">
       <div class="meta"><strong id="pvName">Two-Column Profile</strong><div class="meter" id="meter"><i><b style="width:0"></b></i><span></span></div></div>
+      <div class="dl-row">
+        <button class="btn" id="dlPdf" type="button">Download PDF</button>
+        <button class="btn" id="dlDocx" type="button">Download Word</button>
+      </div>
       <span class="price" id="priceTag" hidden></span>
-      <button class="btn" id="dlPdf" type="button">Download PDF</button>
-      <button class="btn" id="dlDocx" type="button">Download Word</button>
     </div>
     <div class="desk">
       <span class="ex-tag" id="exTag">Example resume · yours appears here</span>
@@ -640,7 +645,7 @@ function renderTpls(){
   tplsEl.innerHTML = "";
   for (const t of allTpls()){
     const b = document.createElement("div"); b.className = "tpl"; b.setAttribute("role","radio"); b.tabIndex = 0; b.setAttribute("aria-checked", String(t.id === state.tplId));
-    b.innerHTML = `<div class="thumb"><div>${renderResume(SAMPLE, t, {fs:.98, sp:.9, cls:"clip"})}</div></div><div class="nm">${esc(t.name)}</div><div class="src">${esc(t.custom ? "from your image" : t.from)}</div>${t.custom ? `<button class="del" type="button" aria-label="Remove ${esc(t.name)}">×</button>` : ""}`;
+    b.innerHTML = `<div class="thumb"><div>${renderResume(SAMPLE, t, {fs:.98, sp:.9, cls:"clip"})}</div></div><div class="nm">${esc(t.name)}</div>${t.custom ? `<button class="del" type="button" aria-label="Remove ${esc(t.name)}">×</button>` : ""}`;
     const choose = () => { state.tplId = t.id; save(); renderTpls(); showPreview(); };
     b.addEventListener("click", e => { if (e.target.closest(".del")){ removeTpl(t.id); return; } choose(); });
     b.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); choose(); } });
