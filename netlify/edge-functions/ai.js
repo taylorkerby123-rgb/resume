@@ -5,6 +5,7 @@
 //   ANTHROPIC_API_KEY  required. From console.anthropic.com > API keys.
 //   ACCESS_CODE        optional. If set, visitors must type this code to use the site.
 //   MODEL              optional. Defaults to claude-sonnet-5-5.
+//   STRIPE_SECRET_KEY  optional. When set, downloads cost PRICE_CENTS (default 300) via Stripe Checkout.
 //
 // This is an Edge Function so the answer can stream back for as long as Claude takes to write it;
 // waiting on Claude does not count against the edge CPU limit.
@@ -18,7 +19,12 @@ export default async (req) => {
   const code = Netlify.env.get("ACCESS_CODE");
 
   if (req.method === "GET") {
-    return Response.json({ ok: !!key, codeRequired: !!code }, { headers: { "cache-control": "no-store" } });
+    const payments = !!Netlify.env.get("STRIPE_SECRET_KEY");
+    const int = (name, d) => Math.max(1, parseInt(Netlify.env.get(name) || String(d), 10) || d);
+    return Response.json(
+      { ok: !!key, codeRequired: !!code, payments, priceCents: int("PRICE_CENTS", 300), packCents: int("PACK_CENTS", 100), packSize: int("PACK_SIZE", 5) },
+      { headers: { "cache-control": "no-store" } },
+    );
   }
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
   if (!key) return new Response("Server is missing ANTHROPIC_API_KEY", { status: 500 });
@@ -35,6 +41,24 @@ export default async (req) => {
   const images = (Array.isArray(body.images) ? body.images : [])
     .slice(0, MAX_IMAGES)
     .filter((i) => i && /^image\/(jpeg|png|webp|gif)$/.test(i.media_type) && typeof i.data === "string" && i.data.length < MAX_IMAGE_B64);
+
+  // AI edits ("Ask for changes") cost one token from a paid pack when payments are on.
+  // The used count is kept on the Stripe payment's metadata.
+  const stripeKey = Netlify.env.get("STRIPE_SECRET_KEY");
+  const isEdit = body.kind === "refine" || prompt.includes("=== CURRENT RESUME JSON ===");
+  let charge = null;
+  if (stripeKey && isEdit) {
+    const sid = (req.headers.get("x-credit") || "").trim();
+    if (!/^cs_(test|live)_[A-Za-z0-9]+$/.test(sid)) return Response.json({ error: "No AI edit tokens" }, { status: 402 });
+    const sr = await fetch(`https://api.stripe.com/v1/checkout/sessions/${sid}?expand[]=payment_intent`, { headers: { Authorization: `Bearer ${stripeKey}` } });
+    const s = sr.ok ? await sr.json() : null;
+    const pack = parseInt(s?.metadata?.tokens || "0", 10) || 0;
+    const used = parseInt(s?.payment_intent?.metadata?.used || "0", 10) || 0;
+    if (!s || s.payment_status !== "paid" || s.metadata?.kind !== "tokens" || !s.payment_intent?.id || used >= pack) {
+      return Response.json({ error: "No AI edit tokens" }, { status: 402 });
+    }
+    charge = { pi: s.payment_intent.id, used };
+  }
 
   const content = [
     ...images.map((i) => ({ type: "image", source: { type: "base64", media_type: i.media_type, data: i.data } })),
@@ -60,6 +84,14 @@ export default async (req) => {
     const detail = await upstream.text().catch(() => "");
     console.log("Anthropic error", upstream.status, detail.slice(0, 500));
     return new Response("Upstream error", { status: upstream.status === 429 || upstream.status === 529 ? 429 : 502 });
+  }
+
+  if (charge) { // Claude accepted the request: use up one token
+    await fetch(`https://api.stripe.com/v1/payment_intents/${charge.pi}`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${stripeKey}`, "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ "metadata[used]": String(charge.used + 1) }),
+    }).catch((e) => console.log("Token count update failed", e));
   }
 
   // Pass Claude's event stream straight through to the browser.

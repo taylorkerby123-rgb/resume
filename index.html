@@ -88,18 +88,21 @@ textarea::placeholder{color:var(--muted)}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .link-btn{border:0;background:none;padding:0;color:var(--accent);cursor:pointer;font-size:13px;text-decoration:underline;text-underline-offset:2px}
 
-.tpls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-@media (max-width:420px){.tpls{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.tpl{position:relative;border:1.5px solid var(--line);border-radius:8px;background:var(--soft);padding:6px 6px 8px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tpls{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(84px,1fr);gap:8px;overflow-x:auto;padding:2px 2px 6px;scroll-snap-type:x proximity}
+.tpls>*{scroll-snap-align:start}
+.tpl{position:relative;border:1.5px solid var(--line);border-radius:8px;background:var(--soft);padding:5px 5px 7px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:5px;min-width:0}
 .tpl:hover{border-color:var(--muted)}
 .tpl[aria-checked="true"]{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent)}
 .tpl .thumb{width:100%;aspect-ratio:8.5/11;max-width:100%;overflow:hidden;border-radius:3px;background:#fff;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .tpl .thumb>div{transform-origin:0 0;position:absolute;left:0;top:0;pointer-events:none}
-.tpl .nm{font-size:12px;font-weight:600;line-height:1.25}
-.tpl .src{font-family:var(--f-mono);font-size:10px;color:var(--muted)}
-.tpl .del{position:absolute;top:4px;right:4px;border:0;border-radius:99px;width:20px;height:20px;background:var(--panel);color:var(--muted);cursor:pointer;line-height:1;font-size:13px}
-.tpl.add{align-items:center;justify-content:center;border-style:dashed;color:var(--muted);text-align:center;min-height:120px;font-size:12px}
-.tpl.add svg{color:var(--accent)}
+.tpl .nm{font-size:11px;font-weight:600;line-height:1.2}
+.tpl .src{font-family:var(--f-mono);font-size:9.5px;color:var(--muted)}
+.tpl .del{position:absolute;top:3px;right:3px;border:0;border-radius:99px;width:18px;height:18px;background:var(--panel);color:var(--muted);cursor:pointer;line-height:1;font-size:12px}
+.wm{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;display:flex;flex-direction:column;justify-content:space-around;align-items:center}
+.wm span{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,7vw,72px);letter-spacing:.2em;color:rgba(30,40,60,.08);transform:rotate(-28deg);white-space:nowrap;user-select:none}
+.price{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.pay-sum{display:flex;justify-content:space-between;align-items:baseline;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--soft)}
+.pay-sum b{font-family:var(--f-display);font-size:22px}
 
 .go{padding:18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:8px 13px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
@@ -283,9 +286,9 @@ textarea::placeholder{color:var(--muted)}
   <section class="out" aria-label="Resume preview">
     <div class="panel toolbar">
       <div class="meta"><strong id="pvName">Two-Column Profile</strong><div class="meter" id="meter"><i><b style="width:0"></b></i><span></span></div></div>
+      <span class="price" id="priceTag" hidden></span>
       <button class="btn" id="dlPdf" type="button">Download PDF</button>
-      <button class="btn" id="dlDocx" type="button">Word (.docx)</button>
-      <button class="btn" id="copyTxt" type="button">Copy text</button>
+      <button class="btn" id="dlDocx" type="button">Download Word</button>
     </div>
     <div class="desk">
       <span class="ex-tag" id="exTag">Example resume · yours appears here</span>
@@ -297,7 +300,7 @@ textarea::placeholder{color:var(--muted)}
       <div><h3>Asked for, not found in your background</h3><div class="chips" id="gaps"></div></div>
       <div class="full"><h3>What changed</h3><p id="noteTxt"></p></div>
       <div class="full">
-        <h3>Ask for changes</h3>
+        <h3>Ask for changes <span class="price" id="tokBal" hidden></span></h3>
         <div class="refine"><input id="refineIn" placeholder="e.g. Lead with my EHR experience, shorten the summary, drop the 2016 job"><button class="btn" id="refineBtn" type="button">Apply</button></div>
       </div>
     </div>
@@ -311,6 +314,17 @@ textarea::placeholder{color:var(--muted)}
     <p class="hint">Claude looks at the layout, colors, fonts and section headings and builds a matching template. It saves in this browser.</p>
     <p class="status" id="tplStatus"></p>
     <div class="row" style="justify-content:flex-end"><button class="btn" id="tplCancel" type="button">Cancel</button><button class="btn primary" id="tplGo" type="button" style="padding:8px 14px;font-size:14px">Build template</button></div>
+  </div>
+</div>
+
+<div class="modal" id="payModal" hidden>
+  <div class="panel" role="dialog" aria-labelledby="payH">
+    <h2 id="payH" style="font-size:18px">Download your resume</h2>
+    <div class="pay-sum"><span id="payWhat">PDF download of this resume</span><b id="payAmt">$3.00</b></div>
+    <p class="hint" id="payHint"></p>
+    <p class="hint">Payment is handled securely by Stripe; this site never sees your card.</p>
+    <p class="status" id="payStatus"></p>
+    <div class="row" style="justify-content:flex-end"><button class="btn" id="payCancel" type="button">Not now</button><button class="btn primary" id="payGo" type="button" style="padding:8px 14px;font-size:14px">Pay</button></div>
   </div>
 </div>
 
@@ -411,15 +425,17 @@ Requirements
 
 /* ---------------- State ---------------- */
 const KEY = "resumeTailor.v1";
-const state = { tplId:"two-column", custom:[], full:null, view:null, onePage:true, resumeImages:[], jdImages:[] };
+const state = { tplId:"two-column", custom:[], full:null, view:null, onePage:true, unlocked:[], packs:[], resumeImages:[], jdImages:[] };
 function load(){ try{ const s = JSON.parse(localStorage.getItem(KEY) || "{}");
   if (s.custom) state.custom = s.custom.map(t => Object.assign(normalizeSpec(t), {id:t.id, custom:true}));
   if (s.tplId) state.tplId = s.tplId;
   if (s.full) state.full = s.full; if (s.view) state.view = s.view;
   if (s.onePage === false) state.onePage = false;
+  if (Array.isArray(s.unlocked)) state.unlocked = s.unlocked.slice(-50);
+  if (Array.isArray(s.packs)) state.packs = s.packs.slice(-30);
   $("#about").value = s.about || ""; $("#jd").value = s.jd || ""; $("#accessCode").value = s.code || "";
 }catch(e){} }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify({custom:state.custom,tplId:state.tplId,full:state.full,view:state.view,onePage:state.onePage,about:$("#about").value,jd:$("#jd").value,code:$("#accessCode").value})); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify({custom:state.custom,tplId:state.tplId,full:state.full,view:state.view,onePage:state.onePage,unlocked:state.unlocked,packs:state.packs,about:$("#about").value,jd:$("#jd").value,code:$("#accessCode").value})); }catch(e){} }
 const allTpls = () => BUILTIN.concat(state.custom);
 const curTpl = () => allTpls().find(t => t.id === state.tplId) || BUILTIN[0];
 
@@ -604,6 +620,9 @@ async function showPreview(){
   else if (state.view && state.view.tplId === S.id && state.view.onePage === state.onePage){ d = state.view.data; fs = state.view.fs; sp = state.view.sp; }
   else { const r = await fitData(state.full, S, state.onePage); if (my !== fitToken) return; state.view = {tplId:S.id, onePage:state.onePage, data:r.data, fs:r.fs, sp:r.sp, trimmed:r.trimmed}; d = r.data; fs = r.fs; sp = r.sp; save(); showNotes(); }
   pvScale.innerHTML = renderResume(d, S, {fs, sp, editable:!isExample});
+  pvFrame.querySelector(".wm")?.remove();
+  if (!isExample && needsPay()){ const w = document.createElement("div"); w.className = "wm"; w.innerHTML = "<span>PREVIEW</span><span>PREVIEW</span><span>PREVIEW</span>"; pvFrame.appendChild(w); }
+  paintPrice();
   updateMeter();
 }
 new ResizeObserver(sizePreview).observe(pvFrame);
@@ -710,15 +729,16 @@ function parseLooseJSON(t){
   throw { code:"invalid_json", text:t };
 }
 // Ask Claude for JSON: through the Claude app when opened there, otherwise through this site's /api/ai server function.
-async function aiJSON(prompt, images, { signal, onText } = {}){
+async function aiJSON(prompt, images, { signal, onText, kind = "tailor", credit = "" } = {}){
   if (ai.mode === "claude") return sample.json(prompt, { signal, onText, cache:false, images: images.length ? images : undefined });
   if (ai.mode !== "web") throw { code:"sampling_disabled" };
   let res;
   try {
     const parts = await Promise.all(images.map(toImagePart));
-    res = await fetch(API, { method:"POST", signal, headers:{ "content-type":"application/json", "x-access-code": $("#accessCode").value.trim() }, body: JSON.stringify({ prompt, images: parts }) });
+    res = await fetch(API, { method:"POST", signal, headers:{ "content-type":"application/json", "x-access-code": $("#accessCode").value.trim(), "x-credit": credit }, body: JSON.stringify({ prompt, images: parts, kind }) });
   } catch(e){ throw { code: e?.name === "AbortError" ? "cancelled" : "upstream_error" }; }
   if (res.status === 401){ ai.codeRequired = true; $("#codeRow").hidden = false; throw { code:"need_code" }; }
+  if (res.status === 402) throw { code:"no_tokens" };
   if (res.status === 429) throw { code:"rate_limited" };
   if (res.status === 413) throw { code:"prompt_too_large" };
   if (!res.ok) throw { code:"upstream_error" };
@@ -743,7 +763,7 @@ async function aiJSON(prompt, images, { signal, onText } = {}){
 }
 const status = $("#status");
 function setStatus(msg, kind){ status.className = "status" + (kind === "err" ? " err" : ""); status.innerHTML = kind === "busy" ? `<span class="dot"></span>${esc(msg)}` : esc(msg); }
-const ERR = { not_granted:"Claude access wasn't allowed for this page, so tailoring is off for now. Reopen the page to be asked again.", sampling_disabled:"Claude isn't available on this account.", rate_limited:"Too many requests right now. Wait a minute and try again.", session_expired:"Sign in to Claude again, then retry.", refused:"Claude declined this request. Check the job description and background text, then try again.", invalid_json:"The answer came back in an unreadable format. Press the button again.", prompt_too_large:"The text is too long. Trim the background or job description and try again.", image_rejected:"One of the images couldn't be read. Try a clearer JPG or PNG.", images_unavailable:"Images can't be sent in this view. Use PDF, Word, or pasted text.", need_code:"This site needs an access code. Enter it, then press the button again.", upstream_error:"Couldn't reach Claude just now. Wait a moment and try again." };
+const ERR = { not_granted:"Claude access wasn't allowed for this page, so tailoring is off for now. Reopen the page to be asked again.", sampling_disabled:"Claude isn't available on this account.", rate_limited:"Too many requests right now. Wait a minute and try again.", session_expired:"Sign in to Claude again, then retry.", refused:"Claude declined this request. Check the job description and background text, then try again.", invalid_json:"The answer came back in an unreadable format. Press the button again.", prompt_too_large:"The text is too long. Trim the background or job description and try again.", image_rejected:"One of the images couldn't be read. Try a clearer JPG or PNG.", images_unavailable:"Images can't be sent in this view. Use PDF, Word, or pasted text.", need_code:"This site needs an access code. Enter it, then press the button again.", no_tokens:"You're out of AI edit tokens. Buy 5 more for $1 to keep asking for changes.", upstream_error:"Couldn't reach Claude just now. Wait a moment and try again." };
 const errMsg = e => ERR[e?.code] || "Something went wrong reaching Claude. Try again.";
 
 const SCHEMA = `{"name":"","title":"","contact":{"phone":"","email":"","location":"","linkedin":"","website":""},"summary":"","experience":[{"role":"","company":"","location":"","start":"","end":"","bullets":[""]}],"education":[{"degree":"","school":"","location":"","year":"","details":""}],"skills":[""],"certifications":[{"name":"","issuer":"","year":""}],"languages":[{"name":"","level":""}],"awards":[""],"projects":[{"name":"","description":""}],"references":"","matched_keywords":[""],"gaps":[""],"notes":""}`;
@@ -819,10 +839,10 @@ function showNotes(){
   const tr = state.view?.trimmed ? ` To fit one page, ${state.view.trimmed} lower-priority line${state.view.trimmed > 1 ? "s were" : " was"} left out for this template.` : "";
   $("#noteTxt").textContent = (d.notes || "Tailored to the job description.") + tr;
 }
-async function runSample(prompt, images, label){
+async function runSample(prompt, images, label, extra = {}){
   ctl = new AbortController(); const btns = [$("#generate"), $("#refineBtn")]; btns.forEach(b => b.disabled = true); $("#stop").hidden = false;
   setStatus(label, "busy");
-  try { return await aiJSON(prompt, images, {signal: ctl.signal,
+  try { return await aiJSON(prompt, images, {...extra, signal: ctl.signal,
       onText: ({text}) => setStatus(`Writing… ${Math.min(99, Math.round(text.length / (state.onePage ? 30 : 50)))}%`, "busy")}); }
   finally { btns.forEach(b => b.disabled = false); $("#stop").hidden = true; }
 }
@@ -837,12 +857,15 @@ $("#generate").addEventListener("click", async () => {
   try {
     const raw = await runSample(tailorPrompt(bg, jd, curTpl(), imgNote, state.onePage), imgs, "Reading your background and the job… this usually takes 30-90 seconds");
     const d = cleanData(raw || {}); if (!d.experience.length && !d.summary) throw {code:"invalid_json"};
+    d.id = "r" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     state.full = d; state.view = null; state.lastImgs = imgs; save();
     await showPreview(); showNotes(); setStatus("Done. Switch templates freely; your content refits to each one.");
   } catch(e){ if (e?.code === "cancelled") setStatus("Stopped."); else setStatus(errMsg(e), "err"); }
 });
 $("#refineBtn").addEventListener("click", async () => {
   const ask = $("#refineIn").value.trim(); if (!ask || !state.full) return;
+  let credit = "";
+  if (paysOn()){ const pk = state.packs.find(p => p.remaining > 0); if (!pk){ openPay("tokens"); return; } credit = pk.session; }
   const cur = Object.assign({}, state.full); ["matched_keywords","gaps","notes"].forEach(k => delete cur[k]);
   const prompt = `Here is a resume (JSON) tailored to a job. Apply this change request from the candidate: "${ask}"
 
@@ -860,9 +883,11 @@ ${$("#about").value.slice(0, 40000)}
 
 === JOB DESCRIPTION ===
 ${$("#jd").value.slice(0, 20000)}`;
-  try { const raw = await runSample(prompt, [], "Applying your change…"); const d = cleanData(raw || {}); if (!d.experience.length) throw {code:"invalid_json"};
-    state.full = d; state.view = null; save(); await showPreview(); showNotes(); $("#refineIn").value = ""; setStatus("Change applied.");
-  } catch(e){ if (e?.code === "cancelled") setStatus("Stopped."); else setStatus(errMsg(e), "err"); }
+  try { const raw = await runSample(prompt, [], "Applying your change…", { kind: credit ? "refine" : "tailor", credit }); const d = cleanData(raw || {}); if (!d.experience.length) throw {code:"invalid_json"}; d.id = state.full.id;
+    state.full = d; state.view = null; save(); await showPreview(); showNotes(); $("#refineIn").value = "";
+    if (credit){ const pk = state.packs.find(p => p.session === credit); if (pk) pk.remaining = Math.max(0, pk.remaining - 1); save(); paintPrice(); }
+    setStatus(credit ? `Change applied. ${tokensLeft()} AI edit token${tokensLeft() === 1 ? "" : "s"} left.` : "Change applied.");
+  } catch(e){ if (e?.code === "cancelled") setStatus("Stopped."); else { if (e?.code === "no_tokens"){ const pk = state.packs.find(p => p.session === credit); if (pk) pk.remaining = 0; save(); paintPrice(); openPay("tokens"); } setStatus(errMsg(e), "err"); } }
 });
 $("#refineIn").addEventListener("keydown", e => { if (e.key === "Enter") $("#refineBtn").click(); });
 
@@ -919,8 +944,8 @@ async function saveFile(filename, data, btn){
   catch(e){ if (e?.code !== "declined") setStatus(e?.code === "rate_limited" ? "A save prompt is already open." : "Couldn't save the file here.", "err"); }
 }
 async function withBusy(btn, label, fn){ const t = btn.textContent; btn.disabled = true; btn.textContent = label; try { await fn(); } finally { btn.disabled = false; btn.textContent = t; } }
-$("#dlPdf").addEventListener("click", e => withBusy(e.currentTarget, "Building PDF…", async () => {
-  const {d, S, fs, sp, real} = currentDoc(); if (!real) setStatus("This is the example resume. Generate yours to download it.");
+async function buildPdf(){
+  const {d, S, fs, sp, real} = currentDoc();
   try { await loadScript("https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js"); }
   catch(err){ setStatus("Couldn't load the PDF builder. Check your connection and try again.", "err"); return; }
   const one = !real || state.onePage;
@@ -934,9 +959,9 @@ $("#dlPdf").addEventListener("click", e => withBusy(e.currentTarget, "Building P
     await saveFile(fileBase(d) + ".pdf", blob);
   } catch(err){ setStatus("The PDF couldn't be built. Try Word (.docx) instead.", "err"); }
   finally { stage.innerHTML = ""; }
-}));
-$("#dlDocx").addEventListener("click", e => withBusy(e.currentTarget, "Building…", async () => {
-  const {d, S, real} = currentDoc(); if (!real) setStatus("This is the example resume. Generate yours to download it.");
+}
+async function buildDocx(){
+  const {d, S} = currentDoc();
   try { await loadScript("https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"); } catch(err){ setStatus("Couldn't load the Word builder. Try again.", "err"); return; }
   const X = window.docx, acc = S.colors.accent.replace("#",""), headFont = S.fonts.head, bodyFont = S.fonts.body, W = 10656;
   const P = [], lab = k => (S.labels[k] || DEFAULT_LABELS[k]).toUpperCase();
@@ -967,27 +992,94 @@ $("#dlDocx").addEventListener("click", e => withBusy(e.currentTarget, "Building�
   }
   const doc = new X.Document({creator:"Resume Tailor", title:(d.name || "") + " Resume", sections:[{properties:{page:{size:{width:12240, height:15840}, margin:{top:792, bottom:792, left:792, right:792}}}, children:P}]});
   try { await saveFile(fileBase(d) + ".docx", await X.Packer.toBlob(doc)); } catch(err){ setStatus("The Word file couldn't be built.", "err"); }
-}));
-$("#copyTxt").addEventListener("click", async () => {
-  const {d, S} = currentDoc(); const L = [];
-  L.push(d.name || ""); if (d.title) L.push(d.title); const cl = CONTACT_KEYS.map(k => d.contact?.[k]).filter(has); if (cl.length) L.push(cl.join(" | "));
-  for (const k of [...S.main, ...S.side.filter(x => x !== "contact")]){
-    const lab = (S.labels[k] || DEFAULT_LABELS[k]).toUpperCase(), B = [];
-    if (k === "summary" && has(d.summary)) B.push(d.summary);
-    if (k === "experience") (d.experience || []).forEach(j => { B.push([j.role, j.company, j.location].filter(has).join(", ") + ([j.start, j.end].some(has) ? `  (${[j.start, j.end].filter(has).join(" – ")})` : "")); j.bullets.forEach(b => B.push("• " + b)); B.push(""); });
-    if (k === "education") (d.education || []).forEach(e => B.push([e.degree, e.school, e.location, e.year].filter(has).join(", ")));
-    if (k === "skills" && has(d.skills)) B.push(d.skills.join(", "));
-    if (k === "certifications") (d.certifications || []).forEach(c => B.push([c.name, c.issuer, c.year].filter(has).join(", ")));
-    if (k === "languages" && has(d.languages)) B.push(d.languages.map(l => l.name + (l.level ? ` (${l.level})` : "")).join(", "));
-    if (k === "awards") (d.awards || []).forEach(a => B.push("• " + a));
-    if (k === "projects") (d.projects || []).forEach(p => B.push(p.name + (p.description ? ": " + p.description : "")));
-    if (k === "references" && has(d.references)) B.push(d.references);
-    if (B.length) { L.push("", lab, ...B); while (L[L.length - 1] === "") L.pop(); }
+}
+/* ---------------- Paying (website only; free inside Claude) ---------------- */
+const pay = { required:false, downloadCents:300, packCents:100, packSize:5 };
+const money = c => "$" + (c / 100).toFixed(2);
+const FMT = { pdf:"PDF", docx:"Word" };
+const curId = () => state.full ? (state.full.id ||= "r" + Date.now().toString(36)) : "";
+const paysOn = () => ai.mode === "web" && pay.required;
+const isUnlocked = fmt => state.unlocked.some(u => u.id === curId() && (u.format === fmt || u.format === "both"));
+const tokensLeft = () => state.packs.reduce((n, p) => n + (p.remaining || 0), 0);
+function needsPay(){ return paysOn() && !!state.full && !isUnlocked("pdf") && !isUnlocked("docx"); }
+let pendingPay = { kind:"download", format:"pdf" };
+function openPay(kind, format = "pdf"){
+  pendingPay = { kind, format };
+  if (kind === "tokens"){
+    $("#payH").textContent = "Buy AI edit tokens";
+    $("#payWhat").textContent = `${pay.packSize} AI edits for any of your resumes`;
+    $("#payAmt").textContent = money(pay.packCents);
+    $("#payHint").textContent = `Each "Ask for changes" request uses one token. Fixing words yourself by clicking on the page is always free.`;
+  } else {
+    $("#payH").textContent = `Download your resume as ${FMT[format]}`;
+    $("#payWhat").textContent = `${FMT[format]} download of this resume`;
+    $("#payAmt").textContent = money(pay.downloadCents);
+    $("#payHint").textContent = `After paying you can re-download this ${FMT[format]} as often as you like, including after small fixes. The other format is a separate ${money(pay.downloadCents)} download.`;
   }
-  const text = L.join("\n");
-  try { await navigator.clipboard.writeText(text); setStatus("Resume text copied. Paste it into application forms."); }
-  catch(e){ setStatus("Copy was blocked here. Select the text on the page instead.", "err"); }
+  $("#payStatus").textContent = ""; $("#payStatus").className = "status"; $("#payGo").disabled = false; $("#payModal").hidden = false; $("#payGo").focus();
+}
+async function requestDownload(fmt, btn){
+  if (!state.full){ setStatus("Tailor your resume first, then download it.", "err"); return; }
+  if (paysOn() && !isUnlocked(fmt)){ openPay("download", fmt); return; }
+  await withBusy(btn, fmt === "pdf" ? "Building PDF…" : "Building Word…", fmt === "pdf" ? buildPdf : buildDocx);
+}
+$("#dlPdf").addEventListener("click", e => requestDownload("pdf", e.currentTarget));
+$("#dlDocx").addEventListener("click", e => requestDownload("docx", e.currentTarget));
+$("#payCancel").addEventListener("click", () => { $("#payModal").hidden = true; });
+$("#payGo").addEventListener("click", async () => {
+  const st = $("#payStatus"); st.className = "status"; st.innerHTML = '<span class="dot"></span>Opening secure checkout…'; $("#payGo").disabled = true;
+  save();
+  try {
+    const r = await fetch("/api/checkout", { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ kind: pendingPay.kind, resumeId: curId(), format: pendingPay.format }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.url) throw new Error(j.error || "checkout");
+    try { localStorage.setItem(KEY + ".pending", JSON.stringify({ ...pendingPay, id: curId(), refine: $("#refineIn").value })); } catch(e){}
+    location.href = j.url;
+  } catch(e){ st.className = "status err"; st.textContent = "Checkout couldn't open. Try again in a moment."; $("#payGo").disabled = false; }
 });
+async function verifySession(sid){ const r = await fetch("/api/verify?session_id=" + encodeURIComponent(sid)); return r.json(); }
+async function handleReturnFromCheckout(){
+  const q = new URLSearchParams(location.search), sid = q.get("paid");
+  if (q.has("paid") || q.has("canceled")) history.replaceState(null, "", location.pathname);
+  let pending = {}; try { pending = JSON.parse(localStorage.getItem(KEY + ".pending") || "{}"); } catch(e){}
+  if (pending.refine) $("#refineIn").value = pending.refine;
+  if (q.has("canceled")){ setStatus("Checkout canceled. You weren't charged."); try { localStorage.removeItem(KEY + ".pending"); } catch(e){} return; }
+  if (!sid) return;
+  setStatus("Confirming your payment…", "busy");
+  try {
+    const j = await verifySession(sid); if (!j.paid) throw new Error("unpaid");
+    if (j.kind === "tokens"){
+      const have = state.packs.find(p => p.session === sid);
+      if (have) have.remaining = j.remaining; else state.packs.push({ session: sid, remaining: j.remaining, at: Date.now() });
+      save(); paintPrice();
+      setStatus(`Payment received, thank you. You have ${tokensLeft()} AI edit tokens. Type your change and press Apply.`);
+      $("#refineIn").focus();
+    } else {
+      const id = j.resumeId || pending.id, format = j.format || pending.format || "pdf";
+      if (!state.unlocked.some(u => u.id === id && u.format === format)) state.unlocked.push({ id, format, session: sid, at: Date.now() });
+      save(); await showPreview();
+      setStatus(`Payment received, thank you. Click Download ${FMT[format]} to save your resume.`);
+      (format === "docx" ? $("#dlDocx") : $("#dlPdf")).focus();
+    }
+    try { localStorage.removeItem(KEY + ".pending"); } catch(e){}
+  } catch(e){ setStatus("We couldn't confirm that payment. If you were charged, refresh this page; the confirmation link still works.", "err"); }
+}
+async function refreshPacks(){ // keep token counts honest with the server's count
+  for (const p of state.packs.filter(p => p.remaining > 0)){ try { const j = await verifySession(p.session); if (j.paid && j.kind === "tokens") p.remaining = j.remaining; } catch(e){} }
+  state.packs = state.packs.filter(p => p.remaining > 0 || Date.now() - (p.at || 0) < 864e5); save(); paintPrice();
+}
+function paintPrice(){
+  const t = $("#priceTag"), on = paysOn();
+  t.hidden = !on;
+  if (on){
+    const paid = ["pdf","docx"].filter(isUnlocked).map(f => FMT[f]);
+    t.textContent = paid.length ? `${paid.join(" + ")} paid` : `${money(pay.downloadCents)} per download`;
+  }
+  $("#dlPdf").textContent = on && !isUnlocked("pdf") ? `PDF · ${money(pay.downloadCents)}` : "Download PDF";
+  $("#dlDocx").textContent = on && !isUnlocked("docx") ? `Word · ${money(pay.downloadCents)}` : "Download Word";
+  const tb = $("#tokBal"); tb.hidden = !on;
+  if (on) tb.textContent = tokensLeft() ? `· ${tokensLeft()} AI edit token${tokensLeft() === 1 ? "" : "s"} left` : `· 1 token per request, ${pay.packSize} for ${money(pay.packCents)}`;
+}
 
 /* ---------------- Boot ---------------- */
 load();
@@ -1003,7 +1095,7 @@ setStatus("Connecting to Claude…", "busy");
     if (!downloads){ $("#dlPdf").disabled = true; $("#dlDocx").disabled = true; }
   } else if (/^https?:$/.test(location.protocol)){ // standalone website
     try { const r = await fetch(API, {headers:{accept:"application/json"}}); const j = await r.json();
-      if (j?.ok){ ai.mode = "web"; ai.ready = true; ai.codeRequired = !!j.codeRequired; caps = {images:{maxCount:6, mediaTypes:["image/jpeg","image/png","image/webp"]}}; }
+      if (j?.ok){ ai.mode = "web"; ai.ready = true; ai.codeRequired = !!j.codeRequired; pay.required = !!j.payments; pay.downloadCents = Number(j.priceCents) || 300; pay.packCents = Number(j.packCents) || 100; pay.packSize = Number(j.packSize) || 5; caps = {images:{maxCount:6, mediaTypes:["image/jpeg","image/png","image/webp"]}}; }
       else offMsg = "The tailoring service on this site isn't configured yet (missing API key).";
     } catch(e){ offMsg = "This site's tailoring service (/api/ai) isn't running."; }
   } else offMsg = "Open this page from a website or inside Claude to tailor resumes.";
@@ -1014,6 +1106,8 @@ setStatus("Connecting to Claude…", "busy");
   renderTpls();
   if (!ai.ready){ $("#generate").disabled = true; $("#refineBtn").disabled = true; setStatus(offMsg, "err"); }
   else setStatus(state.full ? "Your last tailored resume is loaded." : "");
+  if (paysOn()){ await showPreview(); await handleReturnFromCheckout(); refreshPacks(); }
+  paintPrice();
 })();
 $("#accessCode").addEventListener("input", save);
 })();
