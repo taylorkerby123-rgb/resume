@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Tailor your resume to a specific job description in a template you choose.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>Resume Tailor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Montserrat:wght@400;500;600;700&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Lato:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&family=Raleway:wght@400;600;700&family=Roboto:wght@400;500;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@400;700&family=Libre+Baskerville:wght@400;700&display=swap">
+<style>
+/* Layout: a two-pane workbench. Inputs on the left, the Letter-size page on a "desk" on the right. */
+:root{
+  --bg:#eef0f3; --panel:#ffffff; --ink:#151a23; --muted:#5a6372; --line:#d9dee5;
+  --accent:#2343c4; --accent-ink:#ffffff; --mark:#dff36b; --mark-ink:#1b2208;
+  --desk:#dfe3e9; --danger:#b3242d; --ok:#1d7448; --soft:#f5f6f8;
+  --f-display:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#11141a; --panel:#191e26; --ink:#e7eaef; --muted:#9aa3b1; --line:#2b323d;
+  --accent:#8ea3ff; --accent-ink:#0d1330; --mark:#cfe55a; --mark-ink:#1b2208;
+  --desk:#0c0f13; --danger:#ff7c83; --ok:#62d39c; --soft:#1f252e; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#11141a; --panel:#191e26; --ink:#e7eaef; --muted:#9aa3b1; --line:#2b323d;
+  --accent:#8ea3ff; --accent-ink:#0d1330; --mark:#cfe55a; --mark-ink:#1b2208;
+  --desk:#0c0f13; --danger:#ff7c83; --ok:#62d39c; --soft:#1f252e; color-scheme:dark }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5;padding-inline:16px;padding-block:0 40px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.bar{max-width:1400px;margin:0 auto;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:20px 16px}
+.bar h1{font-size:26px;font-weight:700;letter-spacing:-.01em}
+.bar h1 span{font-family:var(--f-mono);font-size:12px;font-weight:400;color:var(--muted);letter-spacing:0;margin-left:10px}
+.bar p{margin:0;color:var(--muted);max-width:60ch}
+
+.how{max-width:1400px;margin:0 auto 20px;padding:16px 18px}
+.how h2{font-size:15px;font-weight:600;margin-bottom:10px}
+.how ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 22px;counter-reset:s}
+@media (max-width:980px){.how ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.how ol{grid-template-columns:minmax(0,1fr)}}
+.how li{counter-increment:s;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-content:start}
+.how li::before{content:counter(s);grid-row:span 2;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:var(--f-mono);font-size:12px;display:grid;place-items:center;margin-top:1px}
+.how strong{font-weight:600}
+.how span{font-size:13px;color:var(--muted)}
+.own{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.own label.btn{cursor:pointer}
+.len{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;font-weight:500}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--soft)}
+.seg button{border:0;background:none;padding:5px 11px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--muted)}
+.seg button[aria-checked="true"]{background:var(--panel);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.code{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500}
+.code input{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--panel)}
+.pv-break.soft{border-top-color:var(--muted)}
+.pv-break.soft span{color:var(--muted)}
+.work{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:980px){.work{grid-template-columns:minmax(0,1fr)}}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.inputs{display:flex;flex-direction:column}
+.step{padding:18px 18px 20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px;min-width:0}
+.step:first-child{border-top:0}
+.step-h{display:flex;align-items:baseline;gap:10px}
+.step-h b{font-family:var(--f-mono);font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.06em}
+.step-h h2{font-size:17px;font-weight:600}
+.step-h .opt{margin-left:auto;font-size:12px;color:var(--muted)}
+.hint{margin:0;color:var(--muted);font-size:13px}
+
+.drop{border:1.5px dashed var(--line);border-radius:8px;padding:14px;display:flex;align-items:center;gap:12px;background:var(--soft);cursor:pointer;transition:border-color .15s}
+.drop:hover,.drop.over{border-color:var(--accent)}
+.drop svg{flex:none;color:var(--accent)}
+.drop div{min-width:0}
+.drop strong{display:block;font-weight:600}
+.drop span{font-size:12px;color:var(--muted)}
+.files{display:flex;flex-wrap:wrap;gap:6px}
+.file-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 4px 3px 9px;border:1px solid var(--line);border-radius:99px;background:var(--panel);max-width:100%}
+.file-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-chip button{border:0;background:none;cursor:pointer;color:var(--muted);padding:0 4px;font-size:14px;line-height:1}
+.file-chip.busy{color:var(--muted)}
+.file-chip.err{border-color:var(--danger);color:var(--danger)}
+
+textarea{width:100%;min-height:130px;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--panel);line-height:1.45;font-size:13px}
+textarea::placeholder{color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.link-btn{border:0;background:none;padding:0;color:var(--accent);cursor:pointer;font-size:13px;text-decoration:underline;text-underline-offset:2px}
+
+.tpls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:420px){.tpls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tpl{position:relative;border:1.5px solid var(--line);border-radius:8px;background:var(--soft);padding:6px 6px 8px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tpl:hover{border-color:var(--muted)}
+.tpl[aria-checked="true"]{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent)}
+.tpl .thumb{width:100%;aspect-ratio:8.5/11;max-width:100%;overflow:hidden;border-radius:3px;background:#fff;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.tpl .thumb>div{transform-origin:0 0;position:absolute;left:0;top:0;pointer-events:none}
+.tpl .nm{font-size:12px;font-weight:600;line-height:1.25}
+.tpl .src{font-family:var(--f-mono);font-size:10px;color:var(--muted)}
+.tpl .del{position:absolute;top:4px;right:4px;border:0;border-radius:99px;width:20px;height:20px;background:var(--panel);color:var(--muted);cursor:pointer;line-height:1;font-size:13px}
+.tpl.add{align-items:center;justify-content:center;border-style:dashed;color:var(--muted);text-align:center;min-height:120px;font-size:12px}
+.tpl.add svg{color:var(--accent)}
+
+.go{padding:18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:8px 13px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.btn:hover:not(:disabled){border-color:var(--muted)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600;padding:11px 16px;justify-content:center;font-size:15px}
+.status{font-size:13px;color:var(--muted);min-height:1.5em;margin:0}
+.status.err{color:var(--danger)}
+.status .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.status .dot{animation:none}}
+
+.out{display:flex;flex-direction:column;gap:14px;min-width:0}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 12px}
+.toolbar .meta{display:flex;flex-direction:column;min-width:0;margin-right:auto}
+.toolbar .meta strong{font-family:var(--f-display);font-size:15px}
+.meter{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.meter i{display:block;width:90px;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
+.meter i b{display:block;height:100%;background:var(--ok)}
+.meter.over i b{background:var(--danger)}
+.meter.over{color:var(--danger)}
+
+.desk{background:var(--desk);border-radius:10px;padding:20px;min-width:0;position:relative}
+.ex-tag{position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:2;font-family:var(--f-mono);font-size:11px;background:var(--mark);color:var(--mark-ink);padding:2px 9px;border-radius:99px;white-space:nowrap}
+.pv-frame{position:relative;margin:0 auto;max-width:816px}
+.pv-scale{transform-origin:0 0;position:absolute;left:0;top:0;box-shadow:0 2px 10px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.05)}
+.pv-break{position:absolute;left:-8px;right:-8px;border-top:2px dashed var(--danger);pointer-events:none}
+.pv-break span{position:absolute;right:0;top:2px;font-family:var(--f-mono);font-size:10px;color:var(--danger);background:var(--desk);padding:0 4px}
+.edit-hint{text-align:center;font-size:12px;color:var(--muted);margin:10px 0 0}
+
+.notes{padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:640px){.notes{grid-template-columns:minmax(0,1fr)}}
+.notes h3{font-size:13px;font-weight:600;margin-bottom:8px}
+.notes p{margin:0;font-size:13px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.kw{font-size:12px;padding:2px 8px;border-radius:4px;background:var(--mark);color:var(--mark-ink)}
+.gap{font-size:12px;padding:2px 8px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+.notes .full{grid-column:1/-1}
+.refine{display:flex;gap:8px;flex-wrap:wrap}
+.refine input{flex:1 1 220px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px 11px;background:var(--panel)}
+
+.modal{position:fixed;inset:0;background:rgba(10,12,16,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
+.modal .panel{max-width:440px;width:100%;padding:20px;display:flex;flex-direction:column;gap:12px}
+.modal img{max-height:240px;object-fit:contain;border:1px solid var(--line);border-radius:6px;background:#fff}
+
+/* ---------- Resume page (document colors come from the template, not the app theme) ---------- */
+.rp{width:816px;min-height:1056px;background:var(--r-page);color:var(--r-ink);font-family:var(--r-body);font-size:calc(13px * var(--fs));line-height:1.4;display:flex;flex-direction:column;position:relative;overflow:hidden;--fs:1;--sp:1}
+.rp.measure{min-height:0}
+.rp.clip{height:1056px;min-height:1056px}
+.rp *{box-sizing:border-box}
+.rp p{margin:0}
+.rp [contenteditable]{outline:none;border-radius:2px}
+.rp [contenteditable]:hover{background:rgba(255,230,0,.18)}
+.rp [contenteditable]:focus{background:rgba(255,230,0,.3);box-shadow:0 0 0 1px rgba(200,170,0,.5)}
+.rp-head{padding:calc(42px * var(--sp)) 48px calc(22px * var(--sp))}
+.H-center .rp-head{text-align:center}
+.H-band .rp-head{background:var(--r-band);color:var(--r-bandink);padding-bottom:calc(30px * var(--sp))}
+.H-left.L-single .rp-head{padding-bottom:calc(16px * var(--sp))}
+.H-left.L-single .rp-head .rp-headin{border-bottom:2px solid var(--r-rule);padding-bottom:calc(14px * var(--sp))}
+.rp-name{font-family:var(--r-head);font-weight:700;font-size:calc(var(--r-namesize) * var(--fs));letter-spacing:var(--r-track);line-height:1.05;margin:0;color:var(--r-namecolor)}
+.NC-upper .rp-name{text-transform:uppercase}
+.H-band .rp-name{color:var(--r-bandink)}
+.rp-title{font-family:var(--r-head);text-transform:uppercase;letter-spacing:.2em;font-size:calc(13px * var(--fs));color:var(--r-accent);font-weight:500;margin-top:calc(8px * var(--sp))}
+.H-band .rp-title{color:var(--r-bandink);opacity:.82}
+.TA .rp-title{margin:0 0 calc(6px * var(--sp))}
+.rp-cline{display:flex;flex-wrap:wrap;gap:2px 0;margin-top:calc(10px * var(--sp));font-size:.93em;color:var(--r-muted)}
+.H-center .rp-cline{justify-content:center}
+.H-band .rp-cline{color:var(--r-bandink);opacity:.85}
+.rp-cline>span+span::before{content:"|";margin:0 10px;opacity:.55}
+.rp-body{flex:1;display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch}
+.L-single .rp-body{padding:calc(6px * var(--sp)) 48px calc(40px * var(--sp))}
+.L-side-left .rp-body{grid-template-columns:var(--r-sidew) minmax(0,1fr)}
+.L-side-right .rp-body{grid-template-columns:minmax(0,1fr) var(--r-sidew)}
+.L-side-right .rp-side{order:2}
+.rp-side{background:var(--r-sidebg);color:var(--r-sideink);padding:calc(26px * var(--sp)) 24px calc(36px * var(--sp)) 30px;font-size:.95em;min-width:0}
+.L-side-left .rp-main{padding:calc(26px * var(--sp)) 46px calc(36px * var(--sp)) 30px;min-width:0}
+.L-side-right .rp-main{padding:calc(26px * var(--sp)) 30px calc(36px * var(--sp)) 48px;min-width:0}
+.L-side-left.H-left .rp-head,.L-side-right.H-left .rp-head{padding-left:48px}
+.rp-sec{margin-bottom:calc(17px * var(--sp))}
+.rp-sec:last-child{margin-bottom:0}
+.rp-h{font-family:var(--r-head);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:calc(13px * var(--fs));color:var(--r-accent);margin:0 0 calc(8px * var(--sp))}
+.rp-side .rp-h{color:var(--r-sidehead)}
+.hs-rule .rp-h{border-bottom:1.5px solid var(--r-rule);padding-bottom:calc(4px * var(--sp))}
+.hs-rule .rp-side .rp-h{border-bottom-color:var(--r-sidehead)}
+.hs-bar .rp-h{border-left:4px solid var(--r-accent);padding-left:9px;line-height:1.2}
+.hs-tint .rp-h{background:var(--r-tint);padding:4px 9px}
+.hs-plain .rp-h{letter-spacing:.18em}
+.rp-sum{text-align:left}
+.rp-job{margin-bottom:calc(11px * var(--sp))}
+.rp-job:last-child{margin-bottom:0}
+.rp-row{display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+.rp-row>*:last-child{flex:none;text-align:right}
+.rp-strong{font-weight:700;color:var(--r-ink)}
+.rp-caps{text-transform:uppercase;letter-spacing:.06em}
+.rp-it{font-style:italic}
+.rp-mut{color:var(--r-muted)}
+.rp-date{color:var(--r-muted);font-size:.92em;white-space:nowrap}
+.rp-acc{color:var(--r-accent);font-weight:600}
+.rp-small{font-size:.9em}
+.rp ul{margin:calc(4px * var(--sp)) 0 0;padding-left:16px}
+.rp li{margin:calc(2px * var(--sp)) 0;padding-left:2px}
+.rp li::marker{color:var(--r-accent)}
+.rp-tl{display:grid;grid-template-columns:118px minmax(0,1fr);gap:0 16px}
+.rp-tl .rp-tld{font-family:var(--r-head);font-weight:600;font-size:.86em;letter-spacing:.06em;text-transform:uppercase;color:var(--r-accent);padding-top:2px;line-height:1.3}
+.rp-ci{display:flex;gap:8px;align-items:flex-start;margin-bottom:calc(6px * var(--sp));word-break:break-word}
+.rp-ci svg{flex:none;width:12px;height:12px;margin-top:.25em;color:var(--r-sidehead)}
+.rp-chips{display:flex;flex-wrap:wrap;gap:5px}
+.rp-chip{border:1px solid var(--r-rule);border-radius:3px;padding:1px 7px;font-size:.9em}
+.rp-ed{margin-bottom:calc(8px * var(--sp))}
+.rp-ed:last-child{margin-bottom:0}
+.rp-side ul{padding-left:14px}
+.rp-side .rp-strong{color:var(--r-sideink)}
+</style>
+
+<header class="bar">
+  <h1>Resume Tailor <span>US Letter 8.5 × 11 in</span></h1>
+  <p>A resume written for the specific job you're applying to, using only your real experience.</p>
+</header>
+
+<section class="how panel" aria-labelledby="howH">
+  <h2 id="howH">How it works</h2>
+  <ol>
+    <li><strong>Add your experience</strong><span>Upload your current resume (PDF or Word), or type out your jobs with dates, certifications, licenses, and skills. Both is best.</span></li>
+    <li><strong>Choose a look</strong><span>Pick a template, or upload a picture or PDF of any resume you like and the app copies its design.</span></li>
+    <li><strong>Paste the job listing</strong><span>Open the job on the company's website, copy the whole posting, including duties and requirements, and paste it in.</span></li>
+    <li><strong>Tailor, check, download</strong><span>Claude rewrites your resume around that job without inventing anything. Read it, click any words to fix them, then download PDF or Word.</span></li>
+  </ol>
+</section>
+
+<div class="work">
+  <section class="panel inputs" aria-label="Inputs">
+    <div class="step">
+      <div class="step-h"><b>01</b><h2>Your background</h2><button class="link-btn opt" id="tryExample" type="button">Load example</button></div>
+      <label class="drop" id="resumeDrop" for="resumeFile">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 18v-6M9 15l3-3 3 3"/></svg>
+        <div><strong>Upload a resume</strong><span id="resumeAccept">PDF, Word (.docx), text, or a photo · drop or click</span></div>
+      </label>
+      <input type="file" id="resumeFile" multiple hidden accept=".pdf,.docx,.txt,.md,image/png,image/jpeg,image/webp">
+      <div class="files" id="resumeFiles"></div>
+      <textarea id="about" placeholder="Text from your files appears here. Add or paste anything else: jobs with dates, certifications, licenses, skills, accomplishments with numbers, languages, volunteer work."></textarea>
+    </div>
+
+    <div class="step">
+      <div class="step-h"><b>02</b><h2>Template</h2></div>
+      <div class="tpls" id="tpls" role="radiogroup" aria-label="Resume template"></div>
+      <div class="own" id="ownTpl">
+        <label class="btn" for="tplFile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          Upload your own template</label>
+        <p class="hint">A screenshot, photo, or PDF of any resume design. Claude copies the layout, colors, fonts, and headings, not the words.</p>
+      </div>
+      <input type="file" id="tplFile" hidden accept="image/png,image/jpeg,image/webp,.pdf,application/pdf">
+    </div>
+
+    <div class="step">
+      <div class="step-h"><b>03</b><h2>Job description</h2><label class="link-btn opt" for="jdFile" style="cursor:pointer">Upload file</label></div>
+      <input type="file" id="jdFile" hidden accept=".pdf,.docx,.txt,.md,image/png,image/jpeg,image/webp">
+      <div class="files" id="jdFiles"></div>
+      <textarea id="jd" placeholder="Paste the full job posting: title, responsibilities, requirements, preferred qualifications."></textarea>
+      <p class="hint">Tip: on the company's careers page, highlight from the job title down through the requirements, copy, and paste here. The requirements section matters most.</p>
+    </div>
+
+    <div class="go">
+      <div class="len">
+        <span id="lenLbl">Length</span>
+        <div class="seg" role="radiogroup" aria-labelledby="lenLbl">
+          <button type="button" role="radio" data-len="1" aria-checked="true">One page</button>
+          <button type="button" role="radio" data-len="2" aria-checked="false">Up to two pages</button>
+        </div>
+      </div>
+      <p class="hint" id="lenHint">Shrinks spacing and drops the least relevant lines until everything fits on one page.</p>
+      <div class="code" id="codeRow" hidden>
+        <label for="accessCode">Access code</label>
+        <input id="accessCode" autocomplete="off" placeholder="If this site uses one">
+      </div>
+      <button class="btn primary" id="generate" type="button">Tailor my resume</button>
+      <div class="row"><p class="status" id="status" role="status"></p><button class="btn" id="stop" type="button" hidden>Stop</button></div>
+    </div>
+  </section>
+
+  <section class="out" aria-label="Resume preview">
+    <div class="panel toolbar">
+      <div class="meta"><strong id="pvName">Two-Column Profile</strong><div class="meter" id="meter"><i><b style="width:0"></b></i><span></span></div></div>
+      <button class="btn" id="dlPdf" type="button">Download PDF</button>
+      <button class="btn" id="dlDocx" type="button">Word (.docx)</button>
+      <button class="btn" id="copyTxt" type="button">Copy text</button>
+    </div>
+    <div class="desk">
+      <span class="ex-tag" id="exTag">Example resume · yours appears here</span>
+      <div class="pv-frame" id="pvFrame"><div class="pv-scale" id="pvScale"></div></div>
+      <p class="edit-hint" id="editHint" hidden>Click any text on the page to fix it. Edits carry into the PDF and Word downloads.</p>
+    </div>
+    <div class="panel notes" id="notes" hidden>
+      <div><h3>Job keywords now covered</h3><div class="chips" id="kw"></div></div>
+      <div><h3>Asked for, not found in your background</h3><div class="chips" id="gaps"></div></div>
+      <div class="full"><h3>What changed</h3><p id="noteTxt"></p></div>
+      <div class="full">
+        <h3>Ask for changes</h3>
+        <div class="refine"><input id="refineIn" placeholder="e.g. Lead with my EHR experience, shorten the summary, drop the 2016 job"><button class="btn" id="refineBtn" type="button">Apply</button></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="modal" id="tplModal" hidden>
+  <div class="panel" role="dialog" aria-labelledby="tplModalH">
+    <h2 id="tplModalH" style="font-size:18px">Use your own template</h2>
+    <img id="tplImg" alt="Template image you picked">
+    <p class="hint">Claude looks at the layout, colors, fonts and section headings and builds a matching template. It saves in this browser.</p>
+    <p class="status" id="tplStatus"></p>
+    <div class="row" style="justify-content:flex-end"><button class="btn" id="tplCancel" type="button">Cancel</button><button class="btn primary" id="tplGo" type="button" style="padding:8px 14px;font-size:14px">Build template</button></div>
+  </div>
+</div>
+
+<div id="stage" aria-hidden="true" style="position:fixed;left:-20000px;top:0;width:816px;pointer-events:none"></div>
+
+<script>
+(() => {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const PAGE_W = 816, PAGE_H = 1056;
+
+/* ---------------- Fonts ---------------- */
+const SERIFS = new Set(["Playfair Display","Merriweather","Libre Baskerville"]);
+const FONT_LIST = ["Montserrat","Open Sans","Lato","Poppins","Raleway","Roboto","Playfair Display","Merriweather","Libre Baskerville"];
+const stack = f => `"${f}", ${SERIFS.has(f) ? "Georgia, 'Times New Roman', serif" : "'Helvetica Neue', Arial, sans-serif"}`;
+
+/* ---------------- Templates (from the Drive folder) ---------------- */
+const BUILTIN = [
+  { id:"two-column", name:"Two-Column Profile", from:"IMG_1893",
+    layout:"side-left", sideWidth:34, header:"left", titleAbove:false, contactIn:"side",
+    side:["contact","education","skills","languages","certifications"], main:["summary","experience","projects","awards","references"],
+    labels:{summary:"Profile Summary",experience:"Work Experience",contact:"Contact"},
+    colors:{accent:"#2b3644",ink:"#262b31",muted:"#5d6670",rule:"#2b3644",sideBg:"#eceef1",sideInk:"#262b31",band:"#2b3644",bandInk:"#ffffff",page:"#ffffff"},
+    fonts:{head:"Montserrat",body:"Open Sans"}, nameCase:"upper", nameSize:44, headStyle:"rule", dateStyle:"below", jobOrder:"company-first", skillsStyle:"list" },
+  { id:"classic", name:"Classic Professional", from:"IMG_1895",
+    layout:"single", sideWidth:30, header:"center", titleAbove:false, contactIn:"header",
+    side:[], main:["summary","experience","education","certifications","skills","awards","projects","languages","references"],
+    labels:{summary:"Professional Summary",experience:"Professional Experience",certifications:"Certifications",awards:"Awards & Recognition",skills:"Skills"},
+    colors:{accent:"#1c2531",ink:"#1f2328",muted:"#4f5965",rule:"#1c2531",sideBg:"#ffffff",sideInk:"#1f2328",band:"#1c2531",bandInk:"#ffffff",page:"#ffffff"},
+    fonts:{head:"Lato",body:"Lato"}, nameCase:"upper", nameSize:34, headStyle:"rule", dateStyle:"right", jobOrder:"company-first", skillsStyle:"inline" },
+  { id:"timeline", name:"Timeline", from:"IMG_1896",
+    layout:"single", sideWidth:30, header:"left", titleAbove:false, contactIn:"header",
+    side:[], main:["summary","experience","education","certifications","skills","languages","awards","references"],
+    labels:{summary:"Career Objective",experience:"Professional Experience",certifications:"Licenses & Certifications",skills:"Additional Skills",references:"References"},
+    colors:{accent:"#3c6a72",ink:"#23292d",muted:"#5b666b",rule:"#3c6a72",sideBg:"#ffffff",sideInk:"#23292d",band:"#3c6a72",bandInk:"#ffffff",page:"#ffffff"},
+    fonts:{head:"Poppins",body:"Open Sans"}, nameCase:"upper", nameSize:40, headStyle:"bar", dateStyle:"left", jobOrder:"role-first", skillsStyle:"chips" },
+  { id:"sidebar-band", name:"Banner & Sidebar", from:"IMG_1897",
+    layout:"side-left", sideWidth:31, header:"band", titleAbove:true, contactIn:"side",
+    side:["contact","skills","languages","certifications"], main:["summary","experience","education","projects","awards","references"],
+    labels:{summary:"Summary",experience:"Work Experience",contact:"Contact"},
+    colors:{accent:"#1f2f46",ink:"#20252c",muted:"#58626f",rule:"#1f2f46",sideBg:"#f0f2f5",sideInk:"#20252c",band:"#1f2f46",bandInk:"#ffffff",page:"#ffffff"},
+    fonts:{head:"Raleway",body:"Roboto"}, nameCase:"upper", nameSize:40, headStyle:"plain", dateStyle:"inline", jobOrder:"role-first", skillsStyle:"list" }
+];
+const DEFAULT_LABELS = {summary:"Summary",experience:"Experience",education:"Education",skills:"Skills",certifications:"Certifications",languages:"Languages",awards:"Awards",projects:"Projects",references:"References",contact:"Contact"};
+const SECTION_KEYS = ["summary","experience","education","skills","certifications","languages","awards","projects","references","contact"];
+
+/* ---------------- Example data (fictional) ---------------- */
+const SAMPLE = {
+  name:"Jordan Reyes", title:"Medical Assistant",
+  contact:{phone:"(480) 555-0142",email:"jordan.reyes@example.com",location:"Mesa, AZ",linkedin:"linkedin.com/in/jordanreyes-ma",website:""},
+  summary:"Certified Medical Assistant with 3 years of experience in busy family practice and urgent care clinics. Known for calm, accurate patient intake, clean EHR documentation, and keeping providers on schedule. Ready to bring strong clinical and front-office skills to a patient-centered primary care team.",
+  experience:[
+    {role:"Medical Assistant",company:"Desert Bloom Family Practice",location:"Mesa, AZ",start:"Jun 2023",end:"Present",bullets:[
+      "Room and prepare 25+ patients daily, recording vitals, histories, and chief complaints in Epic with consistent accuracy",
+      "Perform venipuncture, injections, EKGs, and point-of-care testing under provider supervision",
+      "Coordinate referrals and prior authorizations, cutting average turnaround from 6 days to 3",
+      "Train 4 new MAs on rooming workflow and infection-control standards"]},
+    {role:"Patient Care Technician",company:"Valley Urgent Care",location:"Chandler, AZ",start:"Aug 2021",end:"May 2023",bullets:[
+      "Supported 2 providers across 40-patient shifts with triage intake, wound care, and splinting",
+      "Stocked and audited exam rooms weekly, reducing missing-supply delays",
+      "Handled check-in, insurance verification, and scheduling during front-desk shortages"]},
+    {role:"Customer Service Associate",company:"Saguaro Market",location:"Mesa, AZ",start:"2019",end:"2021",bullets:[
+      "Resolved customer issues at a high-volume service desk with a friendly, professional manner"]}
+  ],
+  education:[{degree:"Diploma, Medical Assistant",school:"Desert Valley Career College",location:"Mesa, AZ",year:"2021",details:""}],
+  skills:["Epic EHR","Vital signs","Phlebotomy","EKG","Injections","Patient intake","Insurance verification","Prior authorizations","Infection control","Bilingual communication"],
+  certifications:[{name:"Certified Medical Assistant (CMA)",issuer:"AAMA",year:"2021"},{name:"BLS for Healthcare Providers",issuer:"American Heart Association",year:"2025"}],
+  languages:[{name:"English",level:"Fluent"},{name:"Spanish",level:"Fluent"}],
+  awards:["Employee of the Quarter, Desert Bloom Family Practice, 2024"], projects:[], references:"Available upon request"
+};
+const EXAMPLE_BG = `Jordan Reyes, Mesa AZ, (480) 555-0142, jordan.reyes@example.com, linkedin.com/in/jordanreyes-ma
+
+Medical Assistant, Desert Bloom Family Practice, Mesa AZ, June 2023 - now. Room patients (about 25 a day), take vitals, update histories in Epic, give injections, draw blood, EKGs, strep/flu/UA tests. I handle referrals and prior auths - got turnaround down from about 6 days to 3. Trained 4 new MAs. Employee of the Quarter 2024.
+
+Patient Care Tech, Valley Urgent Care, Chandler AZ, Aug 2021 - May 2023. Triage intake, wound care, splinting, helped 2 providers on 40 patient shifts. Restocked rooms, covered front desk (check in, insurance verification, scheduling).
+
+Customer service at Saguaro Market 2019-2021.
+
+Medical Assistant diploma, Desert Valley Career College, 2021. CMA (AAMA) 2021. BLS (AHA) renewed 2025. Fluent in Spanish and English.`;
+const EXAMPLE_JD = `Medical Assistant - Primary Care (Full Time)
+Sonoran Health Partners, Gilbert, AZ
+
+We are looking for a compassionate Medical Assistant to join our primary care team.
+
+Responsibilities
+- Room patients, obtain vital signs, and document in the EHR (Epic)
+- Perform phlebotomy, injections/immunizations, EKGs, and CLIA-waived testing
+- Manage referrals, prior authorizations, and care-gap outreach for chronic care patients
+- Maintain clean, stocked exam rooms and follow infection prevention protocols
+- Communicate with patients clearly and with empathy, including Spanish-speaking patients
+
+Requirements
+- Medical Assistant certification (CMA, RMA, or CCMA)
+- Current BLS
+- 2+ years of clinical experience in an outpatient setting
+- Epic experience preferred; bilingual English/Spanish strongly preferred
+- Experience with quality measures (HEDIS) is a plus`;
+
+/* ---------------- State ---------------- */
+const KEY = "resumeTailor.v1";
+const state = { tplId:"two-column", custom:[], full:null, view:null, onePage:true, resumeImages:[], jdImages:[] };
+function load(){ try{ const s = JSON.parse(localStorage.getItem(KEY) || "{}");
+  if (s.custom) state.custom = s.custom.map(t => Object.assign(normalizeSpec(t), {id:t.id, custom:true}));
+  if (s.tplId) state.tplId = s.tplId;
+  if (s.full) state.full = s.full; if (s.view) state.view = s.view;
+  if (s.onePage === false) state.onePage = false;
+  $("#about").value = s.about || ""; $("#jd").value = s.jd || ""; $("#accessCode").value = s.code || "";
+}catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify({custom:state.custom,tplId:state.tplId,full:state.full,view:state.view,onePage:state.onePage,about:$("#about").value,jd:$("#jd").value,code:$("#accessCode").value})); }catch(e){} }
+const allTpls = () => BUILTIN.concat(state.custom);
+const curTpl = () => allTpls().find(t => t.id === state.tplId) || BUILTIN[0];
+
+/* ---------------- Helpers ---------------- */
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const has = v => Array.isArray(v) ? v.length > 0 : !!(v && String(v).trim());
+const clone = o => JSON.parse(JSON.stringify(o));
+const hex = (v, d) => /^#[0-9a-f]{3}([0-9a-f]{3})?$/i.test(String(v||"").trim()) ? String(v).trim() : d;
+function pick(v, list, d){ return list.includes(v) ? v : d; }
+function normalizeSpec(s){
+  s = s || {}; const b = BUILTIN[1];
+  const c = s.colors || {};
+  const okSec = a => Array.isArray(a) ? [...new Set(a.filter(k => SECTION_KEYS.includes(k)))] : [];
+  let layout = pick(s.layout, ["single","side-left","side-right"], "single");
+  let side = layout === "single" ? [] : okSec(s.side);
+  let main = okSec(s.main).filter(k => k !== "contact" && !side.includes(k));
+  ["summary","experience","education","skills","certifications","languages","awards","projects","references"].forEach(k => { if (!main.includes(k) && !side.includes(k)) main.push(k); });
+  if (!main.includes("experience")) { side = side.filter(k => k !== "experience"); main.unshift("experience"); }
+  let contactIn = (layout !== "single" && (s.contactIn === "side" || side.includes("contact"))) ? "side" : "header";
+  if (contactIn === "side" && !side.includes("contact")) side.unshift("contact");
+  if (contactIn === "header") side = side.filter(k => k !== "contact");
+  const labels = {}; if (s.labels && typeof s.labels === "object") for (const k of SECTION_KEYS) if (typeof s.labels[k] === "string" && s.labels[k].trim()) labels[k] = s.labels[k].trim().slice(0,40);
+  return {
+    id: s.id || ("custom-" + Math.random().toString(36).slice(2,8)), name: String(s.name || "Custom template").slice(0,40), from: s.from || "your image", custom: !!s.custom,
+    layout, sideWidth: Math.min(40, Math.max(24, Number(s.sideWidth) || 32)),
+    header: pick(s.header, ["left","center","band"], "left"), titleAbove: !!s.titleAbove, contactIn, side, main, labels,
+    colors:{ accent:hex(c.accent,b.colors.accent), ink:hex(c.ink,b.colors.ink), muted:hex(c.muted,b.colors.muted), rule:hex(c.rule,hex(c.accent,b.colors.rule)),
+      sideBg:hex(c.sideBg,"#f0f2f5"), sideInk:hex(c.sideInk,hex(c.ink,b.colors.ink)), band:hex(c.band,hex(c.accent,b.colors.band)), bandInk:hex(c.bandInk,"#ffffff"), page:hex(c.page,"#ffffff") },
+    fonts:{ head: pick(s.fonts?.head, FONT_LIST, "Montserrat"), body: pick(s.fonts?.body, FONT_LIST, "Open Sans") },
+    nameCase: pick(s.nameCase, ["upper","normal"], "upper"), nameSize: Math.min(56, Math.max(26, Number(s.nameSize) || 38)),
+    headStyle: pick(s.headStyle, ["rule","plain","bar","tint"], "rule"), dateStyle: pick(s.dateStyle, ["right","below","inline","left"], "right"),
+    jobOrder: pick(s.jobOrder, ["company-first","role-first"], "role-first"), skillsStyle: pick(s.skillsStyle, ["list","inline","chips"], "inline")
+  };
+}
+BUILTIN.forEach((t, i) => { BUILTIN[i] = Object.assign(normalizeSpec(t), {id:t.id, name:t.name, from:t.from, custom:false}); });
+
+function lighten(h, amt){ // mix with white
+  let x = h.replace("#",""); if (x.length === 3) x = x.split("").map(c => c + c).join("");
+  const n = [0,2,4].map(i => parseInt(x.slice(i,i+2),16)); return "#" + n.map(v => Math.round(v + (255 - v) * amt).toString(16).padStart(2,"0")).join("");
+}
+
+/* ---------------- Resume renderer ---------------- */
+const ICON = {
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
+  email:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+  location:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+  linkedin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg>',
+  website:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>'
+};
+const CONTACT_KEYS = ["phone","email","location","linkedin","website"];
+
+function renderResume(d, S, opts = {}){
+  const ed = !!opts.editable;
+  const E = (p, v, tag = "span", cls = "") => `<${tag}${cls ? ` class="${cls}"` : ""} data-p="${p}"${ed ? ' contenteditable="true" spellcheck="true"' : ""}>${esc(v)}</${tag}>`;
+  const lab = k => S.labels[k] || DEFAULT_LABELS[k];
+  const dates = (p, j) => (has(j.start) || has(j.end)) ? `${has(j.start) ? E(p+".start", j.start) : ""}${has(j.start) && has(j.end) ? " – " : ""}${has(j.end) ? E(p+".end", j.end) : ""}` : "";
+  const bullets = (p, arr) => has(arr) ? `<ul>${arr.map((b, i) => has(b) ? E(`${p}.bullets.${i}`, b, "li") : "").join("")}</ul>` : "";
+  const c = d.contact || {};
+
+  const sec = {
+    contact: inSide => { const items = CONTACT_KEYS.filter(k => has(c[k])); if (!items.length) return "";
+      return items.map(k => `<div class="rp-ci">${ICON[k]}${E("contact."+k, c[k])}</div>`).join(""); },
+    summary: () => has(d.summary) ? E("summary", d.summary, "p", "rp-sum") : "",
+    experience: inSide => { const xs = (d.experience || []).filter(j => has(j.role) || has(j.company)); if (!xs.length) return "";
+      return (d.experience || []).map((j, i) => { if (!(has(j.role) || has(j.company))) return ""; const p = "experience." + i;
+        const role = has(j.role) ? E(p+".role", j.role) : "", co = has(j.company) ? E(p+".company", j.company) : "", loc = has(j.location) ? E(p+".location", j.location) : "", dt = dates(p, j);
+        const coLoc = [co, loc].filter(Boolean).join(", ");
+        let head;
+        if (S.dateStyle === "left" && !inSide) {
+          return `<div class="rp-job rp-tl"><div class="rp-tld">${dt}</div><div><div class="rp-strong rp-caps">${role}</div>${coLoc ? `<div class="rp-mut">${coLoc}</div>` : ""}${bullets(p, j.bullets)}</div></div>`;
+        }
+        if (S.dateStyle === "right" && !inSide) {
+          head = S.jobOrder === "company-first"
+            ? `<div class="rp-row"><span class="rp-strong rp-caps">${co || role}</span><span class="rp-mut">${loc}</span></div>${co && role ? `<div class="rp-row"><span class="rp-it">${role}</span><span class="rp-date">${dt}</span></div>` : `<div class="rp-row"><span></span><span class="rp-date">${dt}</span></div>`}`
+            : `<div class="rp-row"><span class="rp-strong">${role || co}</span><span class="rp-date">${dt}</span></div>${role && coLoc ? `<div class="rp-it rp-mut">${coLoc}</div>` : ""}`;
+        } else if (S.dateStyle === "inline") {
+          head = `<div class="rp-strong rp-caps">${role || co}</div><div class="rp-mut">${[role ? coLoc : loc, dt].filter(Boolean).join(", ")}</div>`;
+        } else { // below
+          head = S.jobOrder === "company-first"
+            ? `<div class="rp-strong">${co || role}</div>${co && role ? `<div>${role}</div>` : ""}${dt || loc ? `<div class="rp-acc rp-small">${[dt, loc].filter(Boolean).join(" · ")}</div>` : ""}`
+            : `<div class="rp-strong">${role || co}</div>${role && coLoc ? `<div>${coLoc}</div>` : ""}${dt ? `<div class="rp-acc rp-small">${dt}</div>` : ""}`;
+        }
+        return `<div class="rp-job">${head}${bullets(p, j.bullets)}</div>`; }).join(""); },
+    education: inSide => { const xs = d.education || []; if (!xs.some(e => has(e.degree) || has(e.school))) return "";
+      return xs.map((e, i) => { if (!(has(e.degree) || has(e.school))) return ""; const p = "education." + i;
+        const deg = has(e.degree) ? E(p+".degree", e.degree) : "", sch = has(e.school) ? E(p+".school", e.school) : "", loc = has(e.location) ? E(p+".location", e.location) : "", yr = has(e.year) ? E(p+".year", e.year) : "", det = has(e.details) ? E(p+".details", e.details, "div", "rp-mut rp-small") : "";
+        if (inSide) return `<div class="rp-ed">${yr ? `<div class="rp-acc rp-small">${yr}</div>` : ""}<div class="rp-strong rp-caps rp-small">${sch}</div><div>${deg}</div>${det}</div>`;
+        if (S.dateStyle === "left") return `<div class="rp-ed rp-tl"><div class="rp-tld">${yr}</div><div><div class="rp-strong">${deg || sch}</div>${deg && sch ? `<div class="rp-mut">${[sch, loc].filter(Boolean).join(", ")}</div>` : ""}${det}</div></div>`;
+        return `<div class="rp-ed"><div class="rp-row"><span><span class="rp-strong">${deg || sch}</span>${deg && sch ? `, ${sch}` : ""}${loc ? `<span class="rp-mut">, ${loc}</span>` : ""}</span><span class="rp-date">${yr}</span></div>${det}</div>`; }).join(""); },
+    skills: inSide => { const xs = (d.skills || []).map((s, i) => [s, i]).filter(([s]) => has(s)); if (!xs.length) return "";
+      const st = inSide && S.skillsStyle === "inline" ? "list" : S.skillsStyle;
+      if (st === "list") return `<ul>${xs.map(([s, i]) => E("skills."+i, s, "li")).join("")}</ul>`;
+      if (st === "chips") return `<div class="rp-chips">${xs.map(([s, i]) => E("skills."+i, s, "span", "rp-chip")).join("")}</div>`;
+      return `<p>${xs.map(([s, i]) => E("skills."+i, s)).join(" <span class=\"rp-mut\">•</span> ")}</p>`; },
+    certifications: () => { const xs = d.certifications || []; if (!xs.some(x => has(x.name))) return "";
+      return xs.map((x, i) => has(x.name) ? `<div class="rp-ed">${E(`certifications.${i}.name`, x.name, "span", "rp-strong")}${has(x.issuer) ? `, ${E(`certifications.${i}.issuer`, x.issuer)}` : ""}${has(x.year) ? ` <span class="rp-mut">· ${E(`certifications.${i}.year`, x.year)}</span>` : ""}</div>` : "").join(""); },
+    languages: () => { const xs = d.languages || []; if (!xs.some(x => has(x.name))) return "";
+      return xs.map((x, i) => has(x.name) ? `<div class="rp-ed">${E(`languages.${i}.name`, x.name, "span", "rp-strong")}${has(x.level) ? ` <span class="rp-mut">${E(`languages.${i}.level`, x.level)}</span>` : ""}</div>` : "").join(""); },
+    awards: () => { const xs = d.awards || []; if (!xs.some(has)) return ""; return `<ul>${xs.map((a, i) => has(a) ? E("awards."+i, a, "li") : "").join("")}</ul>`; },
+    projects: () => { const xs = d.projects || []; if (!xs.some(x => has(x.name))) return "";
+      return xs.map((x, i) => has(x.name) ? `<div class="rp-ed">${E(`projects.${i}.name`, x.name, "span", "rp-strong")}${has(x.description) ? `: ${E(`projects.${i}.description`, x.description)}` : ""}</div>` : "").join(""); },
+    references: () => has(d.references) ? E("references", d.references, "p") : ""
+  };
+  const block = (k, inSide) => { const body = sec[k] ? sec[k](inSide) : ""; return body ? `<section class="rp-sec"><h3 class="rp-h">${esc(lab(k))}</h3>${body}</section>` : ""; };
+
+  const C = S.colors, sideHead = C.sideBg.toLowerCase() === C.page.toLowerCase() ? C.accent : (isDark(C.sideBg) ? C.sideInk : C.accent);
+  const vars = [`--r-accent:${C.accent}`,`--r-ink:${C.ink}`,`--r-muted:${C.muted}`,`--r-rule:${C.rule}`,`--r-sidebg:${C.sideBg}`,`--r-sideink:${C.sideInk}`,`--r-sidehead:${sideHead}`,
+    `--r-band:${C.band}`,`--r-bandink:${C.bandInk}`,`--r-page:${C.page}`,`--r-tint:${lighten(C.accent,.86)}`,`--r-namecolor:${C.ink}`,
+    `--r-head:${stack(S.fonts.head)}`,`--r-body:${stack(S.fonts.body)}`,`--r-namesize:${S.nameSize}px`,`--r-track:${S.nameCase === "upper" ? ".06em" : "0"}`,`--r-sidew:${S.sideWidth}%`,
+    `--fs:${opts.fs ?? 1}`,`--sp:${opts.sp ?? 1}`].join(";");
+  const name = has(d.name) ? E("name", d.name, "h2", "rp-name") : `<h2 class="rp-name" style="opacity:.35">Your Name</h2>`;
+  const title = has(d.title) ? E("title", d.title, "div", "rp-title") : "";
+  const cline = S.contactIn === "header" ? (() => { const items = CONTACT_KEYS.filter(k => has(c[k])); return items.length ? `<div class="rp-cline">${items.map(k => E("contact."+k, c[k])).join("")}</div>` : ""; })() : "";
+  const head = `<header class="rp-head"><div class="rp-headin">${S.titleAbove ? title + name : name + title}${cline}</div></header>`;
+  const main = S.main.map(k => block(k, false)).join("");
+  const side = S.layout === "single" ? "" : `<aside class="rp-side">${S.side.map(k => block(k, true)).join("")}</aside>`;
+  const cls = ["rp", "L-" + S.layout, "H-" + S.header, "hs-" + S.headStyle, S.nameCase === "upper" ? "NC-upper" : "", S.titleAbove ? "TA" : "", opts.cls || ""].join(" ");
+  return `<div class="${cls}" style="${esc(vars)}">${head}<div class="rp-body">${side}<main class="rp-main">${main}</main></div></div>`;
+}
+function isDark(h){ let x = h.replace("#",""); if (x.length === 3) x = x.split("").map(c => c + c).join(""); const [r,g,b] = [0,2,4].map(i => parseInt(x.slice(i,i+2),16)); return (r*299 + g*587 + b*114) / 1000 < 128; }
+
+/* ---------------- Fit to one page ---------------- */
+const stage = $("#stage");
+function measure(d, S, fs, sp){ stage.innerHTML = renderResume(d, S, {fs, sp, cls:"measure"}); return stage.firstElementChild.offsetHeight; }
+function trimOne(w){
+  const xp = (w.experience || []).map((j, i) => ({i, n:(j.bullets || []).length, min: i === 0 ? 2 : 1})).filter(o => o.n > o.min);
+  if (xp.length){ xp.sort((a, b) => (b.n + b.i * .6) - (a.n + a.i * .6)); w.experience[xp[0].i].bullets.pop(); return true; }
+  if ((w.projects || []).length) { w.projects.pop(); return true; }
+  if ((w.skills || []).length > 8) { w.skills.pop(); return true; }
+  if ((w.awards || []).length > 1) { w.awards.pop(); return true; }
+  if ((w.experience || []).length > 3) { w.experience.pop(); return true; }
+  if (has(w.references)) { w.references = ""; return true; }
+  return false;
+}
+async function fitData(full, S, onePage){
+  try { await document.fonts.ready; } catch(e){}
+  const w = clone(full); let fs = 1, sp = 1, h = measure(w, S, fs, sp), trimmed = 0;
+  if (!onePage){ stage.innerHTML = ""; return { data:w, fs, sp, h, trimmed }; }
+  while (h > PAGE_H && fs > 0.86){ fs = +(fs - 0.02).toFixed(2); sp = Math.max(0.62, +(sp - 0.06).toFixed(2)); h = measure(w, S, fs, sp); }
+  while (h > PAGE_H && trimmed < 24 && trimOne(w)){ trimmed++; h = measure(w, S, fs, sp); }
+  stage.innerHTML = "";
+  return { data:w, fs, sp, h, trimmed };
+}
+
+/* ---------------- Preview ---------------- */
+const pvScale = $("#pvScale"), pvFrame = $("#pvFrame");
+const pageCount = h => Math.max(1, Math.ceil((h - 2) / PAGE_H));
+function contentHeight(page){ const mh = page.style.minHeight; page.style.minHeight = ""; page.classList.add("measure"); const h = page.offsetHeight; page.classList.remove("measure"); page.style.minHeight = mh; return h; }
+function sizePreview(){
+  const s = Math.min(1, pvFrame.clientWidth / PAGE_W) || 1;
+  pvScale.style.transform = `scale(${s})`;
+  const page = pvScale.firstElementChild; const ph = page ? Math.max(PAGE_H, page.offsetHeight) : PAGE_H;
+  pvFrame.style.height = (ph * s) + "px";
+  pvFrame.querySelectorAll(".pv-break").forEach(n => n.remove());
+  if (!page) return;
+  const n = pageCount(page.offsetHeight);
+  for (let k = 1; k < n; k++){
+    const over = state.onePage || k >= 2;
+    const b = document.createElement("div"); b.className = "pv-break" + (over ? "" : " soft"); b.style.top = (PAGE_H * k * s) + "px";
+    b.innerHTML = `<span>${over ? `end of page ${k}, too long` : `page ${k + 1}`}</span>`; pvFrame.appendChild(b);
+  }
+}
+function updateMeter(){
+  const page = pvScale.firstElementChild; if (!page) return;
+  const h = contentHeight(page), m = $("#meter");
+  if (!state.onePage) page.style.minHeight = (pageCount(h) * PAGE_H) + "px"; // keeps sidebar color to the bottom of the last page
+  const limit = state.onePage ? 1 : 2, pages = h / PAGE_H, over = pages > limit + 0.002;
+  m.classList.toggle("over", over);
+  m.querySelector("b").style.width = Math.min(100, pages / limit * 100) + "%";
+  m.querySelector("span").textContent = state.onePage
+    ? (over ? `Runs ${Math.round((pages - 1) * 100)}% past one page` : `Fills ${Math.round(pages * 100)}% of one page`)
+    : (over ? `${pages.toFixed(1)} pages, over the two-page limit` : `${pages <= 1 ? "1" : pages.toFixed(1)} of 2 pages`);
+  sizePreview();
+}
+let fitToken = 0;
+async function showPreview(){
+  const S = curTpl(); $("#pvName").textContent = S.name;
+  const isExample = !state.full; $("#exTag").hidden = !isExample; $("#editHint").hidden = isExample;
+  const my = ++fitToken;
+  let d, fs, sp;
+  if (isExample){ const r = await fitData(SAMPLE, S, true); if (my !== fitToken) return; d = r.data; fs = r.fs; sp = r.sp; }
+  else if (state.view && state.view.tplId === S.id && state.view.onePage === state.onePage){ d = state.view.data; fs = state.view.fs; sp = state.view.sp; }
+  else { const r = await fitData(state.full, S, state.onePage); if (my !== fitToken) return; state.view = {tplId:S.id, onePage:state.onePage, data:r.data, fs:r.fs, sp:r.sp, trimmed:r.trimmed}; d = r.data; fs = r.fs; sp = r.sp; save(); showNotes(); }
+  pvScale.innerHTML = renderResume(d, S, {fs, sp, editable:!isExample});
+  updateMeter();
+}
+new ResizeObserver(sizePreview).observe(pvFrame);
+
+// in-place edits
+function setPath(obj, path, val){ const ks = path.split("."); let o = obj; for (let i = 0; i < ks.length - 1; i++){ if (o == null) return; o = o[ks[i]]; } if (o != null && ks[ks.length-1] in o) o[ks[ks.length-1]] = val; }
+pvScale.addEventListener("focusout", e => { const el = e.target.closest("[data-p]"); if (!el || !state.view) return;
+  const v = el.innerText.replace(/\s*\n\s*/g, " ").trim(); setPath(state.view.data, el.dataset.p, v); setPath(state.full, el.dataset.p, v); save(); updateMeter(); });
+pvScale.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.closest("[data-p]")){ e.preventDefault(); e.target.blur(); } });
+pvScale.addEventListener("paste", e => { if (!e.target.closest("[data-p]")) return; e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData("text/plain"); document.execCommand("insertText", false, t.replace(/\s*\n\s*/g, " ")); });
+
+/* ---------------- Template picker ---------------- */
+const tplsEl = $("#tpls");
+function renderTpls(){
+  tplsEl.innerHTML = "";
+  for (const t of allTpls()){
+    const b = document.createElement("div"); b.className = "tpl"; b.setAttribute("role","radio"); b.tabIndex = 0; b.setAttribute("aria-checked", String(t.id === state.tplId));
+    b.innerHTML = `<div class="thumb"><div>${renderResume(SAMPLE, t, {fs:.98, sp:.9, cls:"clip"})}</div></div><div class="nm">${esc(t.name)}</div><div class="src">${esc(t.custom ? "from your image" : t.from)}</div>${t.custom ? `<button class="del" type="button" aria-label="Remove ${esc(t.name)}">×</button>` : ""}`;
+    const choose = () => { state.tplId = t.id; save(); renderTpls(); showPreview(); };
+    b.addEventListener("click", e => { if (e.target.closest(".del")){ removeTpl(t.id); return; } choose(); });
+    b.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); choose(); } });
+    tplsEl.appendChild(b);
+  }
+  requestAnimationFrame(() => tplsEl.querySelectorAll(".thumb").forEach(th => { th.firstElementChild.style.transform = `scale(${th.clientWidth / PAGE_W})`; }));
+  $("#ownTpl").hidden = !(ai.ready && caps.images);
+}
+// page length
+function paintLen(){
+  document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-checked", String((b.dataset.len === "1") === state.onePage)));
+  $("#lenHint").textContent = state.onePage
+    ? "Shrinks spacing and drops the least relevant lines until everything fits on one page."
+    : "Keeps more detail and lets the resume run onto a second page. Best with 10+ years of relevant experience.";
+}
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+  const one = b.dataset.len === "1"; if (one === state.onePage) return;
+  state.onePage = one; save(); paintLen(); showPreview();
+  if (state.full && !one) setStatus("Showing all the content Claude wrote. Press Tailor my resume again to have it write for two pages.");
+}));
+new ResizeObserver(() => tplsEl.querySelectorAll(".thumb").forEach(th => { th.firstElementChild.style.transform = `scale(${th.clientWidth / PAGE_W})`; })).observe(tplsEl);
+function removeTpl(id){ state.custom = state.custom.filter(t => t.id !== id); if (state.tplId === id) state.tplId = BUILTIN[0].id; if (state.view?.tplId === id) state.view = null; save(); renderTpls(); showPreview(); }
+
+/* ---------------- Libraries (loaded on demand) ---------------- */
+const libs = {};
+function loadScript(src){ return libs[src] ||= new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => { delete libs[src]; rej(new Error("Could not load " + src)); }; document.head.appendChild(s); }); }
+async function pdfText(buf){
+  await loadScript("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"); // runs on the main thread
+  await loadScript("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js");
+  const pdf = await window.pdfjsLib.getDocument({data: buf, isEvalSupported:false}).promise; let out = [];
+  for (let p = 1; p <= Math.min(pdf.numPages, 12); p++){ const tc = await (await pdf.getPage(p)).getTextContent(); let line = "";
+    for (const it of tc.items){ line += it.str; if (it.hasEOL){ out.push(line); line = ""; } else if (it.str && !it.str.endsWith(" ")) line += " "; }
+    if (line.trim()) out.push(line); }
+  return out.map(l => l.replace(/\s+/g, " ").trim()).filter(Boolean).join("\n");
+}
+async function docxText(buf){ await loadScript("https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"); return (await window.mammoth.extractRawText({arrayBuffer: buf})).value.replace(/\n{3,}/g, "\n\n").trim(); }
+async function fileToText(f){
+  const n = f.name.toLowerCase();
+  if (n.endsWith(".pdf")) return pdfText(await f.arrayBuffer());
+  if (n.endsWith(".docx")) return docxText(await f.arrayBuffer());
+  if (n.endsWith(".doc")) throw new Error("Save .doc files as .docx or PDF first");
+  return (await f.text()).trim();
+}
+const isImg = f => /^image\//.test(f.type);
+
+/* ---------------- Uploads ---------------- */
+function chip(host, f, onRemove){ const c = document.createElement("span"); c.className = "file-chip busy"; c.innerHTML = `<span>${esc(f.name)}</span><button type="button" aria-label="Remove ${esc(f.name)}">×</button>`; c.querySelector("button").onclick = () => { onRemove(); c.remove(); }; host.appendChild(c); return c; }
+async function addFiles(files, kind){
+  const host = kind === "resume" ? $("#resumeFiles") : $("#jdFiles"), ta = kind === "resume" ? $("#about") : $("#jd"), imgs = kind === "resume" ? state.resumeImages : state.jdImages;
+  for (const f of files){
+    if (isImg(f)){
+      if (!caps.images){ const c = chip(host, f, () => {}); c.className = "file-chip err"; c.querySelector("span").textContent = f.name + ": photos can't be read here, use PDF or Word"; continue; }
+      imgs.push(f); const c = chip(host, f, () => { const i = imgs.indexOf(f); if (i >= 0) imgs.splice(i, 1); }); c.className = "file-chip"; c.title = "Sent to Claude as an image"; c.querySelector("span").textContent = f.name + " (image)"; continue;
+    }
+    let marker = `--- from ${f.name} ---`;
+    const c = chip(host, f, () => { ta.value = ta.value.replace(new RegExp(`\\n?${marker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[\\s\\S]*?(?=\\n--- from |$)`), "").trim(); save(); });
+    c.querySelector("span").textContent = f.name + " · reading…";
+    try { const t = await fileToText(f); if (!t) throw new Error("No text found. If it's a scanned PDF, upload a photo instead.");
+      ta.value = (ta.value.trim() ? ta.value.trim() + "\n\n" : "") + marker + "\n" + t; c.className = "file-chip"; c.querySelector("span").textContent = f.name; save();
+    } catch(err){ c.className = "file-chip err"; c.querySelector("span").textContent = `${f.name}: ${err.message || "couldn't read"}`; }
+  }
+}
+$("#resumeFile").addEventListener("change", e => { addFiles([...e.target.files], "resume"); e.target.value = ""; });
+$("#jdFile").addEventListener("change", e => { addFiles([...e.target.files], "jd"); e.target.value = ""; });
+const drop = $("#resumeDrop");
+["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => addFiles([...e.dataTransfer.files], "resume"));
+$("#about").addEventListener("input", save); $("#jd").addEventListener("input", save);
+$("#tryExample").addEventListener("click", () => { $("#about").value = EXAMPLE_BG; $("#jd").value = EXAMPLE_JD; save(); setStatus("Example background and job loaded. Press Tailor my resume."); });
+
+/* ---------------- Claude ---------------- */
+let sample = null, caps = {}, downloads = null, ctl = null;
+const API = "/api/ai";
+const ai = { mode:"none", ready:false, codeRequired:false };
+async function toImagePart(blob){ // downscale to a JPEG for the web server
+  const bmp = await createImageBitmap(blob); const sc = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas"); c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
+  const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(bmp, 0, 0, c.width, c.height);
+  return { media_type:"image/jpeg", data: c.toDataURL("image/jpeg", 0.86).split(",")[1] };
+}
+function parseLooseJSON(t){
+  try { return JSON.parse(t); } catch(e){}
+  const m = t.match(/```(?:json)?\s*([\s\S]*?)```/); if (m) { try { return JSON.parse(m[1]); } catch(e){} }
+  const a = t.indexOf("{"), b = t.lastIndexOf("}"); if (a >= 0 && b > a) { try { return JSON.parse(t.slice(a, b + 1)); } catch(e){} }
+  throw { code:"invalid_json", text:t };
+}
+// Ask Claude for JSON: through the Claude app when opened there, otherwise through this site's /api/ai server function.
+async function aiJSON(prompt, images, { signal, onText } = {}){
+  if (ai.mode === "claude") return sample.json(prompt, { signal, onText, cache:false, images: images.length ? images : undefined });
+  if (ai.mode !== "web") throw { code:"sampling_disabled" };
+  let res;
+  try {
+    const parts = await Promise.all(images.map(toImagePart));
+    res = await fetch(API, { method:"POST", signal, headers:{ "content-type":"application/json", "x-access-code": $("#accessCode").value.trim() }, body: JSON.stringify({ prompt, images: parts }) });
+  } catch(e){ throw { code: e?.name === "AbortError" ? "cancelled" : "upstream_error" }; }
+  if (res.status === 401){ ai.codeRequired = true; $("#codeRow").hidden = false; throw { code:"need_code" }; }
+  if (res.status === 429) throw { code:"rate_limited" };
+  if (res.status === 413) throw { code:"prompt_too_large" };
+  if (!res.ok) throw { code:"upstream_error" };
+  const reader = res.body.getReader(), dec = new TextDecoder(); let buf = "", text = "", stop = "";
+  try {
+    for (;;){
+      const { done, value } = await reader.read(); if (done) break;
+      buf += dec.decode(value, { stream:true });
+      let i; while ((i = buf.indexOf("\n")) >= 0){
+        const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+        if (!line.startsWith("data:")) continue;
+        let ev; try { ev = JSON.parse(line.slice(5)); } catch(e){ continue; }
+        if (ev.type === "content_block_delta" && ev.delta?.type === "text_delta"){ text += ev.delta.text; onText?.({ text }); }
+        else if (ev.type === "message_delta" && ev.delta?.stop_reason) stop = ev.delta.stop_reason;
+        else if (ev.type === "error") throw { code: /overloaded|rate_limit/.test(ev.error?.type || "") ? "rate_limited" : "upstream_error" };
+      }
+    }
+  } catch(e){ if (e?.name === "AbortError") throw { code:"cancelled" }; throw e?.code ? e : { code:"upstream_error" }; }
+  if (stop === "refusal") throw { code:"refused" };
+  if (stop === "max_tokens") throw { code:"invalid_json" };
+  return parseLooseJSON(text);
+}
+const status = $("#status");
+function setStatus(msg, kind){ status.className = "status" + (kind === "err" ? " err" : ""); status.innerHTML = kind === "busy" ? `<span class="dot"></span>${esc(msg)}` : esc(msg); }
+const ERR = { not_granted:"Claude access wasn't allowed for this page, so tailoring is off for now. Reopen the page to be asked again.", sampling_disabled:"Claude isn't available on this account.", rate_limited:"Too many requests right now. Wait a minute and try again.", session_expired:"Sign in to Claude again, then retry.", refused:"Claude declined this request. Check the job description and background text, then try again.", invalid_json:"The answer came back in an unreadable format. Press the button again.", prompt_too_large:"The text is too long. Trim the background or job description and try again.", image_rejected:"One of the images couldn't be read. Try a clearer JPG or PNG.", images_unavailable:"Images can't be sent in this view. Use PDF, Word, or pasted text.", need_code:"This site needs an access code. Enter it, then press the button again.", upstream_error:"Couldn't reach Claude just now. Wait a moment and try again." };
+const errMsg = e => ERR[e?.code] || "Something went wrong reaching Claude. Try again.";
+
+const SCHEMA = `{"name":"","title":"","contact":{"phone":"","email":"","location":"","linkedin":"","website":""},"summary":"","experience":[{"role":"","company":"","location":"","start":"","end":"","bullets":[""]}],"education":[{"degree":"","school":"","location":"","year":"","details":""}],"skills":[""],"certifications":[{"name":"","issuer":"","year":""}],"languages":[{"name":"","level":""}],"awards":[""],"projects":[{"name":"","description":""}],"references":"","matched_keywords":[""],"gaps":[""],"notes":""}`;
+const RULES = `TRUTH RULES (strict):
+- Use only facts present in the candidate materials. Never invent employers, job titles, dates, degrees, schools, licenses, certifications, tools, software, languages, or numbers.
+- If a metric isn't in the materials, describe the result without a number. Don't upgrade titles or seniority.
+- You may rephrase, reorder, merge, and cut. Use the job description's own wording for skills and duties only where the candidate genuinely has them.
+- Unknown fields are empty strings or empty arrays. No placeholders like "[Your Name]" or "City, ST".`;
+function templateBrief(S, onePage = true){
+  const order = S.layout === "single" ? S.main : [...S.side.map(k => k + " (sidebar)"), ...S.main];
+  const labels = SECTION_KEYS.filter(k => S.labels[k]).map(k => `${k} → "${S.labels[k]}"`).join(", ");
+  const words = (S.layout === "single" ? 520 : 440) * (onePage ? 1 : 2);
+  return { words, text: `${S.name}: ${S.layout === "single" ? "single column" : `two columns, sidebar ${S.sideWidth}% wide`}. Section order: ${order.join(", ")}.${labels ? " Headings: " + labels + "." : ""}${S.main.includes("summary") && S.labels.summary === "Career Objective" ? " The summary is a career objective aimed at this job." : ""}` };
+}
+function lengthRule(S, onePage){
+  const tb = templateBrief(S, onePage);
+  return onePage
+    ? `- Put the most relevant material first. Most relevant role: 3-5 bullets. Other roles: 1-3 bullets. At most 4 roles; drop roles with nothing relevant when space is tight.
+- It must fit ONE US Letter page in this template: ${tb.text} Aim for about ${tb.words} words in total.`
+    : `- Put the most relevant material first. Relevant roles: 3-6 bullets each. Less relevant roles: 1-2 bullets. Up to 6 roles.
+- It may run onto a SECOND page but no further, in this template: ${tb.text} Aim for at most ${tb.words} words in total, and use the room for real substance, not filler.`;
+}
+function tailorPrompt(bg, jd, S, imgNote, onePage){
+  return `You are an expert resume writer for job seekers. Build a ${onePage ? "ONE-PAGE" : "one- to two-page"} resume tailored to the job description below.
+
+${RULES}
+
+WRITING RULES:
+- Bullets: what you did, how, and the outcome. Start each with a strong action verb. Present tense for a current role, past tense for past roles. No "I", "my", or "me". No period at the end of bullets. Each bullet under 25 words.
+${lengthRule(S, onePage)}
+- summary: 2-3 sentences, under 55 words, written for this specific job. No first person.
+- title: a short headline matching the target role, only if the background supports it (their current title, credential, or field). Otherwise empty.
+- skills: 8-12 short items (1-3 words each), most relevant to the job first.
+- Keep dates in the candidate's format, abbreviated months like "Jun 2023". Use "Present" for current roles.
+
+Return ONLY JSON in exactly this shape (arrays may have any length):
+${SCHEMA}
+matched_keywords: up to 12 important terms from the job description that the resume now truthfully covers.
+gaps: up to 6 short phrases naming job requirements the materials don't show.
+notes: 1-2 plain sentences on the main tailoring choices.
+${imgNote}
+=== CANDIDATE MATERIALS ===
+${bg.slice(0, 60000) || "(see images)"}
+
+=== JOB DESCRIPTION ===
+${jd.slice(0, 30000) || "(see images)"}`;
+}
+function cleanData(d){
+  const s = v => typeof v === "string" ? v.trim() : (v == null ? "" : String(v).trim());
+  const arr = v => Array.isArray(v) ? v : [];
+  const noPh = v => /^\[.*\]$/.test(s(v)) ? "" : s(v);
+  return {
+    name:noPh(d.name), title:noPh(d.title),
+    contact: Object.fromEntries(CONTACT_KEYS.map(k => [k, noPh(d.contact?.[k])])),
+    summary:s(d.summary),
+    experience: arr(d.experience).map(j => ({role:s(j.role),company:s(j.company),location:s(j.location),start:s(j.start),end:s(j.end),bullets:arr(j.bullets).map(b => s(b).replace(/\.\s*$/, "")).filter(Boolean)})).filter(j => j.role || j.company),
+    education: arr(d.education).map(e => ({degree:s(e.degree),school:s(e.school),location:s(e.location),year:s(e.year),details:s(e.details)})).filter(e => e.degree || e.school),
+    skills: arr(d.skills).map(s).filter(Boolean),
+    certifications: arr(d.certifications).map(c => ({name:s(c.name),issuer:s(c.issuer),year:s(c.year)})).filter(c => c.name),
+    languages: arr(d.languages).map(l => ({name:s(l.name),level:s(l.level)})).filter(l => l.name),
+    awards: arr(d.awards).map(s).filter(Boolean),
+    projects: arr(d.projects).map(p => ({name:s(p.name),description:s(p.description)})).filter(p => p.name),
+    references: s(d.references),
+    matched_keywords: arr(d.matched_keywords).map(s).filter(Boolean).slice(0,12),
+    gaps: arr(d.gaps).map(s).filter(Boolean).slice(0,6),
+    notes: s(d.notes)
+  };
+}
+function showNotes(){
+  const d = state.full; $("#notes").hidden = !d; if (!d) return;
+  $("#kw").innerHTML = d.matched_keywords.length ? d.matched_keywords.map(k => `<span class="kw">${esc(k)}</span>`).join("") : `<span class="gap">None listed</span>`;
+  $("#gaps").innerHTML = d.gaps.length ? d.gaps.map(k => `<span class="gap">${esc(k)}</span>`).join("") : `<span class="gap">No obvious gaps</span>`;
+  const tr = state.view?.trimmed ? ` To fit one page, ${state.view.trimmed} lower-priority line${state.view.trimmed > 1 ? "s were" : " was"} left out for this template.` : "";
+  $("#noteTxt").textContent = (d.notes || "Tailored to the job description.") + tr;
+}
+async function runSample(prompt, images, label){
+  ctl = new AbortController(); const btns = [$("#generate"), $("#refineBtn")]; btns.forEach(b => b.disabled = true); $("#stop").hidden = false;
+  setStatus(label, "busy");
+  try { return await aiJSON(prompt, images, {signal: ctl.signal,
+      onText: ({text}) => setStatus(`Writing… ${Math.min(99, Math.round(text.length / (state.onePage ? 30 : 50)))}%`, "busy")}); }
+  finally { btns.forEach(b => b.disabled = false); $("#stop").hidden = true; }
+}
+$("#stop").addEventListener("click", () => ctl?.abort());
+$("#generate").addEventListener("click", async () => {
+  const bg = $("#about").value.trim(), jd = $("#jd").value.trim();
+  const imgs = [...state.resumeImages, ...state.jdImages].slice(0, caps.images?.maxCount || 0);
+  if (!bg && !state.resumeImages.length){ setStatus("Add your resume or some background first (step 01).", "err"); $("#about").focus(); return; }
+  if (!jd && !state.jdImages.length){ setStatus("Paste the job description first (step 03).", "err"); $("#jd").focus(); return; }
+  const nR = Math.min(state.resumeImages.length, imgs.length), nJ = imgs.length - nR;
+  const imgNote = imgs.length ? `IMAGES: ${nR ? `the first ${nR} image(s) are the candidate's resume or background` : ""}${nR && nJ ? "; " : ""}${nJ ? `the last ${nJ} image(s) are the job description` : ""}. Read them as part of the materials.\n` : "";
+  try {
+    const raw = await runSample(tailorPrompt(bg, jd, curTpl(), imgNote, state.onePage), imgs, "Reading your background and the job… this usually takes 30-90 seconds");
+    const d = cleanData(raw || {}); if (!d.experience.length && !d.summary) throw {code:"invalid_json"};
+    state.full = d; state.view = null; state.lastImgs = imgs; save();
+    await showPreview(); showNotes(); setStatus("Done. Switch templates freely; your content refits to each one.");
+  } catch(e){ if (e?.code === "cancelled") setStatus("Stopped."); else setStatus(errMsg(e), "err"); }
+});
+$("#refineBtn").addEventListener("click", async () => {
+  const ask = $("#refineIn").value.trim(); if (!ask || !state.full) return;
+  const cur = Object.assign({}, state.full); ["matched_keywords","gaps","notes"].forEach(k => delete cur[k]);
+  const prompt = `Here is a resume (JSON) tailored to a job. Apply this change request from the candidate: "${ask}"
+
+${RULES}
+The only allowed facts are those in the resume JSON or the original materials below. ${state.onePage ? "Keep it to ONE" : "Keep it to at most TWO"} US Letter page${state.onePage ? "" : "s"} in the "${curTpl().name}" template (about ${templateBrief(curTpl(), state.onePage).words} words at most). Keep bullets without end periods.
+
+Return ONLY the complete updated JSON in this shape: ${SCHEMA}
+Update matched_keywords and gaps for the job, and set notes to one sentence describing what you changed.
+
+=== CURRENT RESUME JSON ===
+${JSON.stringify(cur)}
+
+=== ORIGINAL MATERIALS ===
+${$("#about").value.slice(0, 40000)}
+
+=== JOB DESCRIPTION ===
+${$("#jd").value.slice(0, 20000)}`;
+  try { const raw = await runSample(prompt, [], "Applying your change…"); const d = cleanData(raw || {}); if (!d.experience.length) throw {code:"invalid_json"};
+    state.full = d; state.view = null; save(); await showPreview(); showNotes(); $("#refineIn").value = ""; setStatus("Change applied.");
+  } catch(e){ if (e?.code === "cancelled") setStatus("Stopped."); else setStatus(errMsg(e), "err"); }
+});
+$("#refineIn").addEventListener("keydown", e => { if (e.key === "Enter") $("#refineBtn").click(); });
+
+/* ---------------- Template from image ---------------- */
+let tplImage = null;
+async function pdfFirstPageImage(f){
+  await loadScript("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js");
+  await loadScript("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js");
+  const pdf = await window.pdfjsLib.getDocument({data: await f.arrayBuffer(), isEvalSupported:false}).promise;
+  const page = await pdf.getPage(1), vp = page.getViewport({scale: 1600 / page.getViewport({scale:1}).height});
+  const c = document.createElement("canvas"); c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+  const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+  await page.render({canvasContext: g, viewport: vp}).promise;
+  return await new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error("render")), "image/png"));
+}
+$("#tplFile").addEventListener("change", async e => { const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  const st = $("#tplStatus"); st.className = "status"; st.textContent = "";
+  if (/\.docx?$/i.test(f.name)){ setStatus("For a Word template, save it as PDF first (File > Save As > PDF), then upload the PDF.", "err"); return; }
+  try { tplImage = /\.pdf$/i.test(f.name) || f.type === "application/pdf" ? await pdfFirstPageImage(f) : f; }
+  catch(err){ setStatus("That PDF couldn't be opened. Try a screenshot of the template instead.", "err"); return; }
+  $("#tplImg").src = URL.createObjectURL(tplImage); $("#tplModal").hidden = false; $("#tplGo").disabled = !ai.ready; });
+$("#tplCancel").addEventListener("click", () => { ctl?.abort(); $("#tplModal").hidden = true; });
+$("#tplGo").addEventListener("click", async () => {
+  const st = $("#tplStatus"); st.className = "status"; st.innerHTML = `<span class="dot"></span>Studying the design… about 20-60 seconds`; $("#tplGo").disabled = true;
+  ctl = new AbortController();
+  const prompt = `The image shows a resume design. Describe its visual design so it can be recreated with different content on a US Letter page 816px wide. Ignore the actual text content except section headings.
+Return ONLY JSON:
+{"name":"2-3 word style name","layout":"single|side-left|side-right","sideWidth":25-40 (sidebar width in % if any),"header":"left|center|band (band = name on a solid colored strip)","titleAbove":true if the job title sits above the name,
+"contactIn":"header|side","side":[sections in the sidebar, top to bottom, from: contact, education, skills, languages, certifications, awards, references],
+"main":[sections in the main column, top to bottom, from: summary, experience, education, skills, certifications, languages, awards, projects, references],
+"labels":{"sectionKey":"heading text exactly as written in the image"},
+"colors":{"accent":"#hex headings/accents","ink":"#hex body text","muted":"#hex secondary text","rule":"#hex divider lines","sideBg":"#hex sidebar background","sideInk":"#hex sidebar text","band":"#hex header strip","bandInk":"#hex text on the strip","page":"#hex page background"},
+"fonts":{"head":"closest of ${FONT_LIST.join(", ")}","body":"closest of the same list"},
+"nameCase":"upper|normal","nameSize":26-56 (name font size in px at 816px page width),"headStyle":"rule (line under heading)|plain (bold caps only)|bar (vertical bar left of heading)|tint (shaded strip behind heading)",
+"dateStyle":"right (dates right-aligned on the job line)|below (dates on their own line under the title)|inline (company, location, dates on one line)|left (dates in a left column like a timeline)","jobOrder":"company-first|role-first","skillsStyle":"list|inline|chips"}`;
+  try { const raw = await aiJSON(prompt, [tplImage], {signal: ctl.signal});
+    const spec = normalizeSpec(Object.assign({}, raw, {custom:true, id:"custom-" + Date.now().toString(36)}));
+    state.custom.push(spec); state.tplId = spec.id; save(); renderTpls(); showPreview(); $("#tplModal").hidden = true; setStatus(`Added "${spec.name}" from your image.`);
+  } catch(e){ st.className = "status err"; st.textContent = e?.code === "cancelled" ? "" : errMsg(e); }
+  finally { $("#tplGo").disabled = false; }
+});
+
+/* ---------------- Exports ---------------- */
+function currentDoc(){ const S = curTpl(); if (state.full && state.view) return {d:state.view.data, S, fs:state.view.fs, sp:state.view.sp, real:true}; return {d:SAMPLE, S, fs:1, sp:1, real:false}; }
+const fileBase = d => (d.name || "Resume").replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "_") + "_Resume";
+async function saveFile(filename, data, btn){
+  if (!downloads && !window.claude){ // standalone website: an ordinary download link
+    const url = URL.createObjectURL(data instanceof Blob ? data : new Blob([data]));
+    const a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000); setStatus(`Downloaded ${filename}.`); return;
+  }
+  if (!downloads){ setStatus("Downloads aren't available in this view.", "err"); return; }
+  try { await downloads.save({filename, data}); setStatus(`Saved ${filename}.`); }
+  catch(e){ if (e?.code !== "declined") setStatus(e?.code === "rate_limited" ? "A save prompt is already open." : "Couldn't save the file here.", "err"); }
+}
+async function withBusy(btn, label, fn){ const t = btn.textContent; btn.disabled = true; btn.textContent = label; try { await fn(); } finally { btn.disabled = false; btn.textContent = t; } }
+$("#dlPdf").addEventListener("click", e => withBusy(e.currentTarget, "Building PDF…", async () => {
+  const {d, S, fs, sp, real} = currentDoc(); if (!real) setStatus("This is the example resume. Generate yours to download it.");
+  try { await loadScript("https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js"); }
+  catch(err){ setStatus("Couldn't load the PDF builder. Check your connection and try again.", "err"); return; }
+  const one = !real || state.onePage;
+  stage.innerHTML = renderResume(d, S, {fs, sp, cls: one ? "clip" : "measure"}); const node = stage.firstElementChild;
+  try { await document.fonts.ready; } catch(_){}
+  const pages = one ? 1 : Math.min(2, pageCount(node.offsetHeight));
+  node.classList.remove("measure"); node.style.minHeight = node.style.height = (pages * PAGE_H) + "px";
+  try {
+    const blob = await window.html2pdf().set({margin:0, image:{type:"jpeg", quality:0.97}, html2canvas:{scale:2.5, useCORS:true, backgroundColor:S.colors.page, windowWidth:PAGE_W, width:PAGE_W, height:pages * PAGE_H},
+      jsPDF:{unit:"in", format:"letter", orientation:"portrait", compress:true}, pagebreak:{mode: one ? [] : ["avoid-all"]}}).from(node).outputPdf("blob");
+    await saveFile(fileBase(d) + ".pdf", blob);
+  } catch(err){ setStatus("The PDF couldn't be built. Try Word (.docx) instead.", "err"); }
+  finally { stage.innerHTML = ""; }
+}));
+$("#dlDocx").addEventListener("click", e => withBusy(e.currentTarget, "Building…", async () => {
+  const {d, S, real} = currentDoc(); if (!real) setStatus("This is the example resume. Generate yours to download it.");
+  try { await loadScript("https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"); } catch(err){ setStatus("Couldn't load the Word builder. Try again.", "err"); return; }
+  const X = window.docx, acc = S.colors.accent.replace("#",""), headFont = S.fonts.head, bodyFont = S.fonts.body, W = 10656;
+  const P = [], lab = k => (S.labels[k] || DEFAULT_LABELS[k]).toUpperCase();
+  const run = (text, o = {}) => new X.TextRun(Object.assign({text, font: bodyFont, size: 20}, o));
+  const heading = k => P.push(new X.Paragraph({spacing:{before:200, after:80}, border:{bottom:{style:X.BorderStyle.SINGLE, size:8, color:acc, space:2}}, children:[run(lab(k), {bold:true, color:acc, font:headFont, size:21, characterSpacing:30})]}));
+  const tabRow = (left, right, o = {}) => new X.Paragraph({tabStops:[{type:X.TabStopType.RIGHT, position:W}], spacing:{after:o.after ?? 0}, children:[...left, ...(right ? [run("\t" + right, {color:"555555"})] : [])]});
+  const align = S.header === "center" ? X.AlignmentType.CENTER : X.AlignmentType.LEFT;
+  if (S.titleAbove && d.title) P.push(new X.Paragraph({alignment:align, children:[run(d.title.toUpperCase(), {color:acc, font:headFont, size:22, characterSpacing:40})]}));
+  P.push(new X.Paragraph({alignment:align, children:[run(S.nameCase === "upper" ? (d.name || "").toUpperCase() : d.name || "", {bold:true, font:headFont, size:Math.round(S.nameSize * 1.1), color:S.colors.ink.replace("#","")})]}));
+  if (!S.titleAbove && d.title) P.push(new X.Paragraph({alignment:align, children:[run(d.title.toUpperCase(), {color:acc, font:headFont, size:22, characterSpacing:40})]}));
+  const cl = CONTACT_KEYS.map(k => d.contact?.[k]).filter(has); if (cl.length) P.push(new X.Paragraph({alignment:align, spacing:{before:80}, children:[run(cl.join("  |  "), {color:"555555", size:19})]}));
+  const order = [...S.main, ...S.side.filter(k => k !== "contact")];
+  for (const k of order){
+    if (k === "summary" && has(d.summary)){ heading(k); P.push(new X.Paragraph({children:[run(d.summary)]})); }
+    if (k === "experience" && has(d.experience)){ heading(k); d.experience.forEach((j, i) => {
+      const dt = [j.start, j.end].filter(has).join(" – ");
+      P.push(tabRow([run(j.role || j.company, {bold:true})], dt, {}));
+      const sub = [j.role ? j.company : "", j.location].filter(has).join(", "); if (sub) P.push(new X.Paragraph({children:[run(sub, {italics:true, color:"555555"})]}));
+      j.bullets.forEach(b => P.push(new X.Paragraph({bullet:{level:0}, spacing:{after:20}, children:[run(b)]})));
+      if (i < d.experience.length - 1) P.push(new X.Paragraph({spacing:{after:60}, children:[]})); }); }
+    if (k === "education" && has(d.education)){ heading(k); d.education.forEach(e => { P.push(tabRow([run(e.degree || e.school, {bold:true}), ...(e.degree && e.school ? [run(", " + e.school)] : []), ...(e.location ? [run(", " + e.location, {color:"555555"})] : [])], e.year)); if (e.details) P.push(new X.Paragraph({children:[run(e.details, {color:"555555"})]})); }); }
+    if (k === "skills" && has(d.skills)){ heading(k); P.push(new X.Paragraph({children:[run(d.skills.join("  •  "))]})); }
+    if (k === "certifications" && has(d.certifications)){ heading(k); d.certifications.forEach(c => P.push(new X.Paragraph({children:[run(c.name, {bold:true}), run([c.issuer ? ", " + c.issuer : "", c.year ? " · " + c.year : ""].join(""))]}))); }
+    if (k === "languages" && has(d.languages)){ heading(k); P.push(new X.Paragraph({children:[run(d.languages.map(l => l.name + (l.level ? ` (${l.level})` : "")).join("  •  "))]})); }
+    if (k === "awards" && has(d.awards)){ heading(k); d.awards.forEach(a => P.push(new X.Paragraph({bullet:{level:0}, children:[run(a)]}))); }
+    if (k === "projects" && has(d.projects)){ heading(k); d.projects.forEach(p => P.push(new X.Paragraph({children:[run(p.name, {bold:true}), run(p.description ? ": " + p.description : "")]}))); }
+    if (k === "references" && has(d.references)){ heading(k); P.push(new X.Paragraph({children:[run(d.references)]})); }
+  }
+  const doc = new X.Document({creator:"Resume Tailor", title:(d.name || "") + " Resume", sections:[{properties:{page:{size:{width:12240, height:15840}, margin:{top:792, bottom:792, left:792, right:792}}}, children:P}]});
+  try { await saveFile(fileBase(d) + ".docx", await X.Packer.toBlob(doc)); } catch(err){ setStatus("The Word file couldn't be built.", "err"); }
+}));
+$("#copyTxt").addEventListener("click", async () => {
+  const {d, S} = currentDoc(); const L = [];
+  L.push(d.name || ""); if (d.title) L.push(d.title); const cl = CONTACT_KEYS.map(k => d.contact?.[k]).filter(has); if (cl.length) L.push(cl.join(" | "));
+  for (const k of [...S.main, ...S.side.filter(x => x !== "contact")]){
+    const lab = (S.labels[k] || DEFAULT_LABELS[k]).toUpperCase(), B = [];
+    if (k === "summary" && has(d.summary)) B.push(d.summary);
+    if (k === "experience") (d.experience || []).forEach(j => { B.push([j.role, j.company, j.location].filter(has).join(", ") + ([j.start, j.end].some(has) ? `  (${[j.start, j.end].filter(has).join(" – ")})` : "")); j.bullets.forEach(b => B.push("• " + b)); B.push(""); });
+    if (k === "education") (d.education || []).forEach(e => B.push([e.degree, e.school, e.location, e.year].filter(has).join(", ")));
+    if (k === "skills" && has(d.skills)) B.push(d.skills.join(", "));
+    if (k === "certifications") (d.certifications || []).forEach(c => B.push([c.name, c.issuer, c.year].filter(has).join(", ")));
+    if (k === "languages" && has(d.languages)) B.push(d.languages.map(l => l.name + (l.level ? ` (${l.level})` : "")).join(", "));
+    if (k === "awards") (d.awards || []).forEach(a => B.push("• " + a));
+    if (k === "projects") (d.projects || []).forEach(p => B.push(p.name + (p.description ? ": " + p.description : "")));
+    if (k === "references" && has(d.references)) B.push(d.references);
+    if (B.length) { L.push("", lab, ...B); while (L[L.length - 1] === "") L.pop(); }
+  }
+  const text = L.join("\n");
+  try { await navigator.clipboard.writeText(text); setStatus("Resume text copied. Paste it into application forms."); }
+  catch(e){ setStatus("Copy was blocked here. Select the text on the page instead.", "err"); }
+});
+
+/* ---------------- Boot ---------------- */
+load();
+paintLen(); renderTpls(); showPreview(); showNotes();
+setStatus("Connecting to Claude…", "busy");
+(async () => {
+  let offMsg = "";
+  if (window.claude?.use){ // opened inside Claude
+    const [s, dl] = await Promise.all([window.claude.use("sample"), window.claude.use("downloads")]);
+    sample = s; downloads = dl;
+    if (sample){ ai.mode = "claude"; ai.ready = true; try { caps = await sample.limits(); } catch(e){ caps = {}; } }
+    else offMsg = "Tailoring needs Claude, which isn't available in this view.";
+    if (!downloads){ $("#dlPdf").disabled = true; $("#dlDocx").disabled = true; }
+  } else if (/^https?:$/.test(location.protocol)){ // standalone website
+    try { const r = await fetch(API, {headers:{accept:"application/json"}}); const j = await r.json();
+      if (j?.ok){ ai.mode = "web"; ai.ready = true; ai.codeRequired = !!j.codeRequired; caps = {images:{maxCount:6, mediaTypes:["image/jpeg","image/png","image/webp"]}}; }
+      else offMsg = "The tailoring service on this site isn't configured yet (missing API key).";
+    } catch(e){ offMsg = "This site's tailoring service (/api/ai) isn't running."; }
+  } else offMsg = "Open this page from a website or inside Claude to tailor resumes.";
+  $("#codeRow").hidden = !ai.codeRequired;
+  if (!caps.images) $("#resumeAccept").textContent = "PDF, Word (.docx), or text · drop or click";
+  $("#resumeFile").accept = caps.images ? ".pdf,.docx,.txt,.md," + caps.images.mediaTypes.join(",") : ".pdf,.docx,.txt,.md";
+  $("#jdFile").accept = $("#resumeFile").accept;
+  renderTpls();
+  if (!ai.ready){ $("#generate").disabled = true; $("#refineBtn").disabled = true; setStatus(offMsg, "err"); }
+  else setStatus(state.full ? "Your last tailored resume is loaded." : "");
+})();
+$("#accessCode").addEventListener("input", save);
+})();
+</script>
+
+</body></html>
